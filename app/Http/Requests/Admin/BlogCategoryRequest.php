@@ -4,7 +4,7 @@ namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBlogCategoryRequest extends FormRequest
+class BlogCategoryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class StoreBlogCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255|unique:blog_categories,title',
+            'title' => 'required|string|max:30',
             'description' => 'max:255'
         ];
     }
@@ -33,7 +33,6 @@ class StoreBlogCategoryRequest extends FormRequest
             'title.required' => 'Tên danh mục không được để trống',
             'title.string' => 'Tên danh mục phải là văn bản',
             'title.max' => 'Tên danh mục không được quá dài',
-            'title.unique' => 'Tên danh mục đã tồn tại',
             'description.max' => 'Mô tả không được quá dài'
         ];
     }

@@ -199,8 +199,8 @@
                     <ul class="sidebar-menu">
                         <li class="menu-header">Main</li>
                         <li class="dropdown active">
-                            <a href="index.html" class="nav-link"><i
-                                    data-feather="monitor"></i><span>Dashboard</span></a>
+                            <a href="{{ route('admin.dashboard') }}" class="nav-link"><i
+                                    data-feather="monitor"></i><span>Bảng điều khiển</span></a>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i
@@ -212,9 +212,9 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    data-feather="command"></i><span>Apps</span></a>
+                                    data-feather="command"></i><span>Quản lý đăng tuyển</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="chat.html">Chat</a></li>
+                                <li><a class="nav-link" href="chat.html">Loại công việc</a></li>
                                 <li><a class="nav-link" href="portfolio.html">Portfolio</a></li>
                                 <li><a class="nav-link" href="blog.html">Blog</a></li>
                                 <li><a class="nav-link" href="calendar.html">Calendar</a></li>
@@ -222,11 +222,10 @@
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    data-feather="mail"></i><span>Email</span></a>
+                                    data-feather="file-text"></i><span>Quản lý bài viết</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="email-inbox.html">Inbox</a></li>
-                                <li><a class="nav-link" href="email-compose.html">Compose</a></li>
-                                <li><a class="nav-link" href="email-read.html">read</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.blogcategory.index') }}">Danh mục bài viết</a></li>
+                                <li><a class="nav-link" href="email-compose.html">Bài viết</a></li>
                             </ul>
                         </li>
                         <li class="menu-header">UI Elements</li>
