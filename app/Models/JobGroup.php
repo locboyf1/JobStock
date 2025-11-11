@@ -2,19 +2,19 @@
 
 namespace App\Models;
 
+use Faker\Provider\Company;
 use Illuminate\Database\Eloquent\Model;
 
-class BlogCategory extends Model
+class JobGroup extends Model
 {
     protected $fillable = [
         'title',
         'description',
         'position',
-        'alias',
         'is_show'
     ];
 
-    public function blogs(){
-        return $this->hasMany(Blog::class);
+    public function jobs(){
+        return $this->hasMany(CompanyJob::class);
     }
 }

@@ -56,7 +56,8 @@
                                 <a href="#" class="dropdown-item"> <span
                                         class="dropdown-item-avatar
 											text-white"> <img alt="image"
-                                            src="{{ asset('admins/assets/img/users/user-1.png') }}" class="rounded-circle">
+                                            src="{{ asset('admins/assets/img/users/user-1.png') }}"
+                                            class="rounded-circle">
                                     </span> <span class="dropdown-item-desc"> <span class="message-user">John
                                             Deo</span>
                                         <span class="time messege-text">Please check your mail !!</span>
@@ -64,7 +65,8 @@
                                     </span>
                                 </a> <a href="#" class="dropdown-item"> <span
                                         class="dropdown-item-avatar text-white">
-                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-2.png') }}" class="rounded-circle">
+                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-2.png') }}"
+                                            class="rounded-circle">
                                     </span> <span class="dropdown-item-desc"> <span class="message-user">Sarah
                                             Smith</span> <span class="time messege-text">Request for leave
                                             application</span>
@@ -72,14 +74,16 @@
                                     </span>
                                 </a> <a href="#" class="dropdown-item"> <span
                                         class="dropdown-item-avatar text-white">
-                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-5.png') }}" class="rounded-circle">
+                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-5.png') }}"
+                                            class="rounded-circle">
                                     </span> <span class="dropdown-item-desc"> <span class="message-user">Jacob
                                             Ryan</span> <span class="time messege-text">Your payment invoice is
                                             generated.</span> <span class="time">12 Min Ago</span>
                                     </span>
                                 </a> <a href="#" class="dropdown-item"> <span
                                         class="dropdown-item-avatar text-white">
-                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-4.png') }}" class="rounded-circle">
+                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-4.png') }}"
+                                            class="rounded-circle">
                                     </span> <span class="dropdown-item-desc"> <span class="message-user">Lina
                                             Smith</span> <span class="time messege-text">hii John, I have upload
                                             doc
@@ -88,7 +92,8 @@
                                     </span>
                                 </a> <a href="#" class="dropdown-item"> <span
                                         class="dropdown-item-avatar text-white">
-                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-3.png') }}" class="rounded-circle">
+                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-3.png') }}"
+                                            class="rounded-circle">
                                     </span> <span class="dropdown-item-desc"> <span class="message-user">Jalpa
                                             Joshi</span> <span class="time messege-text">Please do as specify.
                                             Let me
@@ -97,7 +102,8 @@
                                     </span>
                                 </a> <a href="#" class="dropdown-item"> <span
                                         class="dropdown-item-avatar text-white">
-                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-2.png') }}" class="rounded-circle">
+                                        <img alt="image" src="{{ asset('admins/assets/img/users/user-2.png') }}"
+                                            class="rounded-circle">
                                     </span> <span class="dropdown-item-desc"> <span class="message-user">Sarah
                                             Smith</span> <span class="time messege-text">Client Requirements</span>
                                         <span class="time">2 Days Ago</span>
@@ -192,7 +198,8 @@
             <div class="main-sidebar sidebar-style-2">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="index.html"> <img alt="image" src="{{ asset('admins/assets/img/logo.png') }}" class="header-logo" />
+                        <a href="index.html"> <img alt="image" src="{{ asset('admins/assets/img/logo.png') }}"
+                                class="header-logo" />
                             <span class="logo-name">Otika</span>
                         </a>
                     </div>
@@ -201,14 +208,6 @@
                         <li class="dropdown active">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link"><i
                                     data-feather="monitor"></i><span>Bảng điều khiển</span></a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" class="menu-toggle nav-link has-dropdown"><i
-                                    data-feather="briefcase"></i><span>Widgets</span></a>
-                            <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="widget-chart.html">Chart Widgets</a></li>
-                                <li><a class="nav-link" href="widget-data.html">Data Widgets</a></li>
-                            </ul>
                         </li>
                         <li class="dropdown">
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i
@@ -224,8 +223,16 @@
                             <a href="#" class="menu-toggle nav-link has-dropdown"><i
                                     data-feather="file-text"></i><span>Quản lý bài viết</span></a>
                             <ul class="dropdown-menu">
-                                <li><a class="nav-link" href="{{ route('admin.blogcategory.index') }}">Danh mục bài viết</a></li>
-                                <li><a class="nav-link" href="email-compose.html">Bài viết</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.blogcategory.index') }}">Danh mục bài
+                                        viết</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.blog.index') }}">Bài viết</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                                    data-feather="briefcase"></i><span>Quản lý công việc</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="{{ route('admin.jobgroup.index') }}">Nhóm ngành</a></li>
                             </ul>
                         </li>
                         <li class="menu-header">UI Elements</li>
@@ -427,6 +434,10 @@
     <script src="{{ asset('admins/assets/js/page/index.js') }}"></script>
     <script src="{{ asset('admins/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('admins/assets/js/custom.js') }}"></script>
+    <script src="{{ asset('admins/assets/bundles/jquery/jquery.min.js') }}"></script>
+    <script src="{{ asset('admins/assets/js/page/bs-custom-file-input.min.js') }}"></script>
+
+    @yield('scripts')
 </body>
 
 

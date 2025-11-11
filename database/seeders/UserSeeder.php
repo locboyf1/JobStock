@@ -21,7 +21,10 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'email' => 'quangloc@admin.com',
                 'role_id' => 1,
-                'avatar' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTu947vRl8LrSIwMWPrR4mgPae4ThKm18DxA&s'
+                'avatar' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTu947vRl8LrSIwMWPrR4mgPae4ThKm18DxA&s',
+                'is_active' => 1,
+                'created_at' => now(),
+                'updated_at' => now()
             ]
         ]);
     }

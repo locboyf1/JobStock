@@ -1,15 +1,17 @@
 @extends('admin.layout')
-@section('title', 'Quản lý danh mục bài viết')
+@section('title', 'Quản lý ngành thuộc {{ $jobGroup->title }}')
 @section('content')
     <section class="section">
         <div class="section-body">
             <div class="card">
                 <div class="card-header">
-                    <h4>Quản lý danh mục bài viết</h4>
+                    <h4>Quản lý ngành | {{ $jobGroup->title }}</h4>
                 </div>
                 <div class="card-body">
-                    <a href="{{ route('admin.blogcategory.create') }}" class="btn btn-success mb-3"><i
-                            class="fas fa-file-medical"></i> Thêm danh mục</a>
+                    <a href="{{ route('admin.job.create', ['id' => $jobGroup->id]) }}" class="btn btn-success mb-3"><i
+                            class="fas fa-file-medical"></i> Thêm ngành</a>
+                            <a href="{{ route('admin.jobgroup.index') }}" class="btn btn-secondary mb-3"><i
+                            class="fas fa-arrow-left"></i> Quay lại</a>
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -23,20 +25,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($categories as $category)
+                            @forelse ($jobs as $job)
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
-                                    <td>{{ $category->title }}</td>
-                                    <td>{{ $category->description }}</td>
+                                    <td>{{ $job->title }}</td>
+                                    <td>{{ $job->description }}</td>
                                     <td class="row">
-                                        <form action="{{ route('admin.blogcategory.up', ['id' => $category->id]) }}"
+                                        <form action="{{ route('admin.job.up', ['id' => $job->id]) }}"
                                             method="post">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-secondary"><i
                                                     class="fas fa-arrow-up"></i></button>
                                         </form>
-                                        <form action="{{ route('admin.blogcategory.down', ['id' => $category->id]) }}"
+                                        <form action="{{ route('admin.job.down', ['id' => $job->id]) }}"
                                             method="post">
                                             @csrf
                                             @method('PUT')
@@ -45,19 +47,19 @@
                                         </form>
 
                                     </td>
-                                    <td>{{ $category->created_at }}</td>
-                                    <td>{{ $category->updated_at }}</td>
+                                    <td>{{ $job->created_at }}</td>
+                                    <td>{{ $job->updated_at }}</td>
                                     <td>
                                         <div class="row">
-                                            <a href="{{ route('admin.blogcategory.edit', ['id' => $category->id]) }}"
+                                            <a href="{{ route('admin.job.edit', ['id' => $job->id]) }}"
                                                 class="btn btn-success"><i class="fa fa-edit"></i> Sửa</a>
                                             <form method="post"
-                                                action="{{ route('admin.blogcategory.status', ['id' => $category->id]) }}">
+                                                action="{{ route('admin.job.status', ['id' => $job->id]) }}">
                                                 @csrf
                                                 @method('PUT')
                                                 <button type="submit"
-                                                    class="btn {{ $category->is_show ? 'btn-warning' : 'btn-danger' }}"><i
-                                                        class="fa {{ $category->is_show ? 'fa-eye' : 'fa-eye-slash' }}"></i>{{ $category->is_show ? 'Đang hiện' : 'Đã ẩn' }}</button>
+                                                    class="btn {{ $job->is_show ? 'btn-warning' : 'btn-danger' }}"><i
+                                                        class="fa {{ $job->is_show ? 'fa-eye' : 'fa-eye-slash' }}"></i>{{ $job->is_show ? 'Đang hiện' : 'Đã ẩn' }}</button>
                                             </form>
 
                                         </div>
@@ -66,7 +68,8 @@
 
                             @empty
                                 <tr>
-                                    <td colspan="4" class="text-center">Bảng danh mục bài viết hiện đang trống</td>
+                                    <td colspan="7" class="text-center">Bảng ngành của nhóm ngành {{ $jobGroup->title }}
+                                        hiện đang trống</td>
                                 </tr>
                             @endforelse
                         </tbody>

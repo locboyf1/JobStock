@@ -4,17 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class BlogCategory extends Model
+class CompanyJob extends Model
 {
     protected $fillable = [
         'title',
         'description',
         'position',
-        'alias',
         'is_show'
     ];
 
-    public function blogs(){
-        return $this->hasMany(Blog::class);
+    public function job_group(){
+        return $this->belongsTo(JobGroup::class);
     }
+
 }
