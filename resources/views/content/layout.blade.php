@@ -13,7 +13,7 @@
 <body>
     <div class="Loader"></div>
     <div class="wrapper">
-        <nav class="navbar navbar-default navbar-fixed navbar-transparent white bootsnav">
+        <nav class="navbar navbar-default navbar-fixed navbar-dark white bootsnav">
             <div class="container">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu"><i
                         class="fa fa-bars"></i></button>
@@ -24,9 +24,19 @@
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                         <li><a href="login.html"><i class="fa fa-pencil" aria-hidden="true"></i>SignUp</a></li>
-                        <li><a href="pricing.html"><i class="fa fa-sign-in" aria-hidden="true"></i>Pricing</a></li>
-                        <li class="left-br"><a href="javascript:void(0)" data-toggle="modal" data-target="#signup"
-                                class="signin">Sign In Now</a></li>
+                        <li><a href="{{ route('company.index') }}"><i class="fa fa-building" aria-hidden="true"></i>Công ty</a>
+                        </li>
+                        <li class="left-br">
+                            @auth
+                                <form action="{{ route('logout') }}" method="post">
+                                    @csrf
+                                    <button type="submit" class="btn btn-lg">Đăng xuất</button>
+                                </form>
+                            @endauth
+                            @guest
+                                <a class="" href="{{ route('login') }}">Đăng nhập</a>
+                            @endguest
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                         <li class="dropdown megamenu-fw">
@@ -117,6 +127,7 @@
                 </div>
             </div>
         </nav>
+        <div class="clearfix"></div>
         @yield('content')
         <div class="clearfix"></div>
         <footer class="footer">
@@ -284,23 +295,6 @@
                 </div>
             </div>
         </div>
-        <button class="w3-button w3-teal w3-xlarge w3-right" onclick="openRightMenu()"><i class="spin fa fa-cog"
-                aria-hidden="true"></i></button>
-        <div class="w3-sidebar w3-bar-block w3-card-2 w3-animate-right" style="display:none;right:0;" id="rightMenu">
-            <button onclick="closeRightMenu()" class="w3-bar-item w3-button w3-large">Close &times;</button>
-            <ul id="styleOptions" title="switch styling">
-                <li><a href="javascript: void(0)" class="cl-box blue" data-theme="colors/blue-style"></a></li>
-                <li><a href="javascript: void(0)" class="cl-box red" data-theme="colors/red-style"></a></li>
-                <li><a href="javascript: void(0)" class="cl-box purple" data-theme="colors/purple-style"></a></li>
-                <li><a href="javascript: void(0)" class="cl-box green" data-theme="colors/green-style"></a></li>
-                <li><a href="javascript: void(0)" class="cl-box dark-red" data-theme="colors/dark-red-style"></a>
-                </li>
-                <li><a href="javascript: void(0)" class="cl-box orange" data-theme="colors/orange-style"></a></li>
-                <li><a href="javascript: void(0)" class="cl-box sea-blue" data-theme="colors/sea-blue-style "></a>
-                </li>
-                <li><a href="javascript: void(0)" class="cl-box pink" data-theme="colors/pink-style"></a></li>
-            </ul>
-        </div>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/viewportchecker.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/bootstrap.min.js') }}"></script>
@@ -317,20 +311,8 @@
         <script type="text/javascript" src="{{ asset('assets/plugins/js/jquery.easy-autocomplete.min.js') }}"></script>
         <script src="{{ asset('assets/js/custom.js') }}"></script>
         <script src="{{ asset('assets/js/jQuery.style.switcher.js') }}"></script>
-        <script type="text/javascript">
-            $(document).ready(function() {
-                $('#styleOptions').styleSwitcher();
-            });
-        </script>
-        <script>
-            function openRightMenu() {
-                document.getElementById("rightMenu").style.display = "block";
-            }
 
-            function closeRightMenu() {
-                document.getElementById("rightMenu").style.display = "none";
-            }
-        </script>
+    @yield('scripts')
     </div>
 </body>
 

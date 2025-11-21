@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('childern_menus', function (Blueprint $table) {
+        Schema::create('children_menus', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('description')->nullable();
@@ -19,7 +19,7 @@ return new class extends Migration
             $table->integer('position');
             $table->boolean('is_show');
 
-            $table->foreignId('menus_id')->constrained('menus')->onDelete('cascade');
+            $table->foreignId('menu_id')->constrained('menus')->onDelete('cascade');
 
             $table->timestamps();
         });
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('childern_menus');
+        Schema::dropIfExists('children_menus');
     }
 };

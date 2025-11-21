@@ -1,7 +1,7 @@
 @extends('content.layout')
 @section('title', 'Trang chủ')
 @section('content')
-   <div class="clearfix"></div>
+
     <div class="banner" style="background-image:url('{{ asset('assets/img/banner-9.jpg') }}');">
         <div class="container">
             <div class="banner-caption">

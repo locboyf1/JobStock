@@ -434,7 +434,7 @@
     <script src="{{ asset('admins/assets/js/page/index.js') }}"></script>
     <script src="{{ asset('admins/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('admins/assets/js/custom.js') }}"></script>
-    <script src="{{ asset('admins/assets/bundles/jquery/jquery.min.js') }}"></script>
+    {{-- <script src="{{ asset('admins/assets/bundles/jquery/jquery.min.js') }}"></script> --}}
     <script src="{{ asset('admins/assets/js/page/bs-custom-file-input.min.js') }}"></script>
 
     @yield('scripts')

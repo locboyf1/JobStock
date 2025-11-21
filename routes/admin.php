@@ -2,13 +2,15 @@
 
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\CompanyJobController;
+use App\Http\Controllers\Admin\MenuController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JobGroupController;
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -52,5 +54,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('/status/{id}', [JobController::class, 'status'])->name('status');
         Route::put('/up/{id}', [JobController::class, 'up'])->name('up');
         Route::put('/down/{id}', [JobController::class, 'down'])->name('down');
+    });
+
+    Route::prefix('menu')->name('menu.')->group(function () {
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::get('/create', [MenuController::class, 'create'])->name('create');
+        Route::post('/store', [MenuController::class, 'store'])->name('store');  
+        Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [MenuController::class, 'update'])->name('update');
+        Route::put('/status/{id}', [MenuController::class, 'status'])->name('status');
+        Route::put('/up/{id}', [MenuController::class, 'up'])->name('up');
+        Route::put('/down/{id}', [MenuController::class, 'down'])->name('down');
+    });
+
+    Route::prefix('company')->name('company.')->group(function () {
+        Route::get('/', [CompanyController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [CompanyController::class, 'show'])->name('show');
+        Route::put('/approve/{id}', [CompanyController::class, 'approve'])->name('approve');
+        Route::put('/unapprove/{id}', [CompanyController::class, 'unapprove'])->name('unapprove');
     });
 });

@@ -16,15 +16,27 @@ class RoleSeeder extends Seeder
         DB::table('roles')->insert([
             [
                 'id' => 1,
-                'name'=> 'Quản trị viên',
+                'name' => 'Quản trị viên',
                 'description' => 'Toàn quyền',
-                'alias'=> 'quantrivien'
+                'alias' => 'quantrivien',
+                'created_at' => now(),
+                'updated_at' => now()
             ],
             [
                 'id' => 2,
-                'name'=> 'Ứng viên',
+                'name' => 'Ứng viên',
                 'description' => 'Tìm việc',
-                'alias'=> 'ungvien'
+                'alias' => 'ungvien',
+                'created_at' => now(),
+                'updated_at' => now()
+            ],
+            [
+                'id' => 3,
+                'name' => 'Công ty',
+                'description' => 'Tìm ứng viên',
+                'alias' => 'congty',
+                'created_at' => now(),
+                'updated_at' => now()
             ]
         ]);
     }
