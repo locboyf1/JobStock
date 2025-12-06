@@ -192,18 +192,25 @@
 
                                     <h4>Giấy tờ chứng minh quyền sở hữu/đại diện</h4>
                                     <img src="{{ asset('storage/' . $company->confirm_image) }}" width="100%" />
+                                    @if ($company->confirm_updated_image != null)
+                                        <h4>Giấy tờ chứng minh sự thay đổi thông tin</h4>
+                                        <img src="{{ asset('storage/' . $company->confirm_updated_image) }}" width="100%" />
+                                    @endif
                                     <div class="text-right mt-3">
-                                        <form action="{{ route('admin.company.approve', $company->id) }}" method="post" class="d-inline-block">
+                                        <form action="{{ route('admin.company.approve', $company->id) }}" method="post"
+                                            class="d-inline-block">
                                             @csrf
                                             @method('PUT')
-                                        <button class="btn btn-primary" type="submit">Duyệt</button>
+                                            <button class="btn btn-primary" type="submit">Duyệt</button>
                                         </form>
-                                        <form action="{{ route('admin.company.unapprove', $company->id) }}" method="post" class="d-inline-block">
+                                        <form action="{{ route('admin.company.unapprove', $company->id) }}" method="post"
+                                            class="d-inline-block">
                                             @csrf
                                             @method('PUT')
-                                        <button class="btn btn-danger" type="submit">Không duyệt</button>
+                                            <button class="btn btn-danger" type="submit">Không duyệt</button>
                                         </form>
-                                        <a href="{{ route('admin.company.index') }}" class="btn btn-secondary">Quay lại</a>
+                                        <a href="{{ route('admin.company.index') }}" class="btn btn-secondary">Quay
+                                            lại</a>
                                     </div>
                                 </div>
                             </div>

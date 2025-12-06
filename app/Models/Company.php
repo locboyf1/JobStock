@@ -10,6 +10,7 @@ class Company extends Model
     protected $fillable = [
         'tax_code',
         'confirm_image',
+        'confirm_updated_image',
         'is_confirmed',
         'is_show',
         'phone',

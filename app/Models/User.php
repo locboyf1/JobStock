@@ -24,7 +24,7 @@ class User extends Authenticatable
         'phone',
         'role_id',
         'avatar',
-        'is_active'
+        'is_active',
     ];
 
     /**
@@ -49,8 +49,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function company()
     {
         return $this->hasOne(Company::class, 'users_id', 'id');
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id', 'id');
+    }
+
+    public function getAvatarPathAttribute()
+    {
+        if ($this->avatar == null) {
+            return 'DEFAULT_AVATAR.jpg';
+        }
+
+        return $this->avatar;
     }
 }

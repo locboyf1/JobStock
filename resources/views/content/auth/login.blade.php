@@ -8,6 +8,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/plugins/css/plugins.css') }}">
 
+    <link rel="stylesheet" href="{{ asset('admins/assets/bundles/izitoast/css/iziToast.min.css') }}">
+
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link type="text/css" rel="stylesheet" id="jssDefault" href="{{ asset('assets/css/colors/green-style.css') }}">
 
@@ -54,9 +56,44 @@
         <script type="text/javascript" src="{{ asset('assets/plugins/js/slick.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/gmap3.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/jquery.easy-autocomplete.min.js') }}"></script>
+        <script src="{{ asset('assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
 
         <script src="{{ asset('assets/js/custom.js') }}"></script>
         <script src="{{ asset('assets/js/jQuery.style.switcher.js') }}"></script>
+
+        <script>
+            @if (session()->has('success'))
+                iziToast.success({
+                    title: 'Thành công',
+                    message: '{{ session()->get('success') }}',
+                    position: 'topRight'
+                });
+            @endif
+
+            @if (session()->has('error'))
+                iziToast.error({
+                    title: 'Thất bại',
+                    message: '{{ session()->get('error') }}',
+                    position: 'topRight'
+                });
+            @endif
+
+            @if (session()->has('warning'))
+                iziToast.warning({
+                    title: 'Cảnh báo',
+                    message: '{{ session()->get('warning') }}',
+                    position: 'topRight'
+                });
+            @endif
+
+            @if (session()->has('info'))
+                iziToast.info({
+                    title: 'Thông báo',
+                    message: '{{ session()->get('info') }}',
+                    position: 'topRight'
+                });
+            @endif
+        </script>
     </div>
 </body>
 

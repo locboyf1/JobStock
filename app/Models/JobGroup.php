@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Faker\Provider\Company;
 use Illuminate\Database\Eloquent\Model;
 
 class JobGroup extends Model
@@ -11,10 +10,11 @@ class JobGroup extends Model
         'title',
         'description',
         'position',
-        'is_show'
+        'is_show',
     ];
 
-    public function jobs(){
-        return $this->hasMany(CompanyJob::class);
+    public function jobs()
+    {
+        return $this->hasMany(JobCompany::class);
     }
 }

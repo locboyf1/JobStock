@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('tax_code', 20)->unique();
             $table->string('confirm_image');
+            $table->string('confirm_updated_image')->nullable();
             $table->boolean('is_confirmed')->nullable();
             $table->boolean('is_show');
 

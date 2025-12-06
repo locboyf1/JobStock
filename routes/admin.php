@@ -2,13 +2,16 @@
 
 use App\Http\Controllers\Admin\BlogCategoryController;
 use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\ChatBotSettingController;
+use App\Http\Controllers\Admin\ChildrenMenuController;
 use App\Http\Controllers\Admin\CompanyController;
-use App\Http\Controllers\Admin\CompanyJobController;
-use App\Http\Controllers\Admin\MenuController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JobGroupController;
+use App\Http\Controllers\Admin\JobTypeController;
+use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\UserController;
+use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
@@ -59,7 +62,7 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::prefix('menu')->name('menu.')->group(function () {
         Route::get('/', [MenuController::class, 'index'])->name('index');
         Route::get('/create', [MenuController::class, 'create'])->name('create');
-        Route::post('/store', [MenuController::class, 'store'])->name('store');  
+        Route::post('/store', [MenuController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [MenuController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [MenuController::class, 'update'])->name('update');
         Route::put('/status/{id}', [MenuController::class, 'status'])->name('status');
@@ -67,10 +70,43 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
         Route::put('/down/{id}', [MenuController::class, 'down'])->name('down');
     });
 
+    Route::prefix('childrenmenu')->name('childrenmenu.')->group(function () {
+        Route::get('/{id}', [ChildrenMenuController::class, 'index'])->name('index');
+        Route::get('/create/{id}', [ChildrenMenuController::class, 'create'])->name('create');
+        Route::post('/store/{id}', [ChildrenMenuController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [ChildrenMenuController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [ChildrenMenuController::class, 'update'])->name('update');
+        Route::put('/status/{id}', [ChildrenMenuController::class, 'status'])->name('status');
+        Route::put('/up/{id}', [ChildrenMenuController::class, 'up'])->name('up');
+        Route::put('/down/{id}', [ChildrenMenuController::class, 'down'])->name('down');
+    });
+
     Route::prefix('company')->name('company.')->group(function () {
         Route::get('/', [CompanyController::class, 'index'])->name('index');
         Route::get('/show/{id}', [CompanyController::class, 'show'])->name('show');
         Route::put('/approve/{id}', [CompanyController::class, 'approve'])->name('approve');
         Route::put('/unapprove/{id}', [CompanyController::class, 'unapprove'])->name('unapprove');
+    });
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('edit');
+        Route::Put('/update/{id}', [UserController::class, 'update'])->name('update');
+        Route::Put('/status/{id}', [UserController::class, 'status'])->name('status');
+    });
+
+    Route::prefix('jobtype')->name('jobtype.')->group(function () {
+        Route::get('/', [JobTypeController::class, 'index'])->name('index');
+        Route::get('/create', [JobTypeController::class, 'create'])->name('create');
+        Route::post('/store', [JobTypeController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [JobTypeController::class, 'edit'])->name('edit');
+        Route::put('/update/{id}', [JobTypeController::class, 'update'])->name('update');
+        Route::put('/status/{id}', [JobTypeController::class, 'status'])->name('status');
+        Route::put('/up/{id}', [JobTypeController::class, 'up'])->name('up');
+        Route::put('/down/{id}', [JobTypeController::class, 'down'])->name('down');
+    });
+
+    Route::prefix('chatbotsetting')->name('chatbotsetting.')->group(function () {
+        Route::get('/', [ChatBotSettingController::class, 'index'])->name('index');
+        Route::put('/update', [ChatBotSettingController::class, 'update'])->name('update');
     });
 });

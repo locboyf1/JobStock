@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use function Laravel\Prompts\table;
 use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
@@ -21,11 +19,11 @@ class UserSeeder extends Seeder
                 'password' => bcrypt('12345678'),
                 'email' => 'quangloc@admin.com',
                 'role_id' => 1,
-                'avatar' => 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTu947vRl8LrSIwMWPrR4mgPae4ThKm18DxA&s',
-                'is_active' => 1,
+                'avatar' => null,
+                'is_active' => true,
                 'created_at' => now(),
-                'updated_at' => now()
-            ]
+                'updated_at' => now(),
+            ],
         ]);
     }
 }

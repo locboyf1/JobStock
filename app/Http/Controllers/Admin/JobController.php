@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\JobRequest;
-use App\Models\CompanyJob;
-use Illuminate\Http\Request;
-use App\Models\Job;
+use App\Models\JobCompany;
 use App\Models\JobGroup;
 
 class JobController extends Controller
@@ -18,13 +16,14 @@ class JobController extends Controller
     {
 
         $jobGroup = JobGroup::find($id);
-        if (!$jobGroup) {
+        if (! $jobGroup) {
             return abort(404);
         }
         $jobs = $jobGroup->jobs()->orderBy('position')->get();
+
         return view('admin.job.index', [
             'jobs' => $jobs,
-            'jobGroup' => $jobGroup
+            'jobGroup' => $jobGroup,
         ]);
     }
 
@@ -34,11 +33,12 @@ class JobController extends Controller
     public function create(string $id)
     {
         $jobGroup = JobGroup::find($id);
-        if (!$jobGroup) {
+        if (! $jobGroup) {
             return abort(404);
         }
+
         return view('admin.job.create', [
-            'jobGroup' => $jobGroup
+            'jobGroup' => $jobGroup,
         ]);
     }
 
@@ -48,7 +48,7 @@ class JobController extends Controller
     public function store(JobRequest $request, string $id)
     {
         $jobGroup = JobGroup::find($id);
-        if (!$jobGroup) {
+        if (! $jobGroup) {
             return abort(404);
         }
 
@@ -58,8 +58,9 @@ class JobController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'is_show' => $request->input('is_show') ? 1 : 0,
-            'position' => $number + 1
+            'position' => $number + 1,
         ]);
+
         return redirect()->route('admin.job.index', $id);
     }
 
@@ -76,10 +77,11 @@ class JobController extends Controller
      */
     public function edit(string $id)
     {
-        $job = CompanyJob::find($id);
-        if (!$job) {
+        $job = JobCompany::find($id);
+        if (! $job) {
             return abort(404);
         }
+
         return view('admin.job.edit', compact('job'));
     }
 
@@ -87,17 +89,17 @@ class JobController extends Controller
      * Update the specified resource in storage.
      */
     public function update(JobRequest $request, string $id)
-    {  
+    {
         $validated = $request->validated();
-        $job = CompanyJob::find($id);
-        if (!$job) {
+        $job = JobCompany::find($id);
+        if (! $job) {
             return abort(404);
         }
 
         $job->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'is_show' => $request->input('is_show') ? 1 : 0
+            'is_show' => $request->input('is_show') ? 1 : 0,
         ]);
 
         return redirect()->route('admin.job.index', $job->job_group_id);
@@ -105,13 +107,13 @@ class JobController extends Controller
 
     public function status(string $id)
     {
-        $job = CompanyJob::find($id);
-        if (!$job) {
+        $job = JobCompany::find($id);
+        if (! $job) {
             return abort(404);
         }
 
         $job->update([
-            'is_show' => $job->is_show ? 0 : 1
+            'is_show' => $job->is_show ? 0 : 1,
         ]);
 
         return redirect()->route('admin.job.index', $job->job_group_id);
@@ -119,20 +121,20 @@ class JobController extends Controller
 
     public function up(string $id)
     {
-        $upJob = CompanyJob::find($id);
-        if (!$upJob) {
+        $upJob = JobCompany::find($id);
+        if (! $upJob) {
             return abort(404);
         }
 
         if ($upJob->position != 1) {
-            $downJob = CompanyJob::where('job_group_id', $upJob->job_group_id) ->where('position', $upJob->position - 1)->first();
+            $downJob = JobCompany::where('job_group_id', $upJob->job_group_id)->where('position', $upJob->position - 1)->first();
 
             $upJob->update([
-                'position' => $downJob->position
+                'position' => $downJob->position,
             ]);
 
             $downJob->update([
-                'position' => $downJob->position + 1
+                'position' => $downJob->position + 1,
             ]);
         }
 
@@ -141,22 +143,23 @@ class JobController extends Controller
 
     public function down(string $id)
     {
-        $downJob = CompanyJob::find($id);
-        if (!$downJob) {
+        $downJob = JobCompany::find($id);
+        if (! $downJob) {
             return abort(404);
         }
 
-        if ($downJob->position != CompanyJob::where('job_group_id', $downJob->job_group_id)->max('position')) {
-            $upJob = CompanyJob::where('job_group_id', $downJob->job_group_id)->where('position', $downJob->position + 1)->first();
+        if ($downJob->position != JobCompany::where('job_group_id', $downJob->job_group_id)->max('position')) {
+            $upJob = JobCompany::where('job_group_id', $downJob->job_group_id)->where('position', $downJob->position + 1)->first();
 
             $downJob->update([
-                'position' => $upJob->position
+                'position' => $upJob->position,
             ]);
 
             $upJob->update([
-                'position' => $upJob->position - 1
+                'position' => $upJob->position - 1,
             ]);
         }
+
         return redirect()->route('admin.job.index', ['id' => $downJob->job_group_id]);
     }
 

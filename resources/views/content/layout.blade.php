@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/plugins/css/plugins.css') }}">
     <link href="{{ asset('assets/css/style.css') }}" rel="stylesheet">
     <link type="text/css" rel="stylesheet" id="jssDefault" href="{{ asset('assets/css/colors/green-style.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/bundles/izitoast/css/iziToast.min.css') }}">
 </head>
 
 <body>
@@ -24,7 +25,8 @@
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
                         <li><a href="login.html"><i class="fa fa-pencil" aria-hidden="true"></i>SignUp</a></li>
-                        <li><a href="{{ route('company.index') }}"><i class="fa fa-building" aria-hidden="true"></i>Công ty</a>
+                        <li><a href="{{ route('company.index') }}"><i class="fa fa-building" aria-hidden="true"></i>Công
+                                ty</a>
                         </li>
                         <li class="left-br">
                             @auth
@@ -311,8 +313,46 @@
         <script type="text/javascript" src="{{ asset('assets/plugins/js/jquery.easy-autocomplete.min.js') }}"></script>
         <script src="{{ asset('assets/js/custom.js') }}"></script>
         <script src="{{ asset('assets/js/jQuery.style.switcher.js') }}"></script>
+        <script src="{{ asset('assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
 
-    @yield('scripts')
+        @livewire('chatbot')
+        @livewireScripts
+
+        <script>
+            @if (session()->has('success'))
+                iziToast.success({
+                    title: 'Thành công',
+                    message: '{{ session()->get('success') }}',
+                    position: 'topRight'
+                });
+            @endif
+
+            @if (session()->has('error'))
+                iziToast.error({
+                    title: 'Thất bại',
+                    message: '{{ session()->get('error') }}',
+                    position: 'topRight'
+                });
+            @endif
+
+            @if (session()->has('warning'))
+                iziToast.warning({
+                    title: 'Cảnh báo',
+                    message: '{{ session()->get('warning') }}',
+                    position: 'topRight'
+                });
+            @endif
+
+            @if (session()->has('info'))
+                iziToast.info({
+                    title: 'Thông báo',
+                    message: '{{ session()->get('info') }}',
+                    position: 'topRight'
+                });
+            @endif
+        </script>
+
+        @yield('scripts')
     </div>
 </body>
 

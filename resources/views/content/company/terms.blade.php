@@ -83,7 +83,7 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group @error('tax_code') has-error @enderror">
+                                <div class="form-group @error('confirm_image') has-error @enderror">
                                     <label for="confirm_image">Ảnh chụp Giấy phép kinh doanh / Giấy tờ chứng minh bạn có
                                         quyền sử dụng thông tin của doanh nghiệp này<span
                                             class="text-danger">*</span></label>
