@@ -8,8 +8,8 @@
                     <h4>Quản lý menu</h4>
                 </div>
                 <div class="card-body">
-                    <a href="{{ route('admin.menu.create') }}" class="btn btn-success mb-3"><i
-                            class="fas fa-file-medical"></i> Thêm nhóm menu</a>
+                    <a href="{{ route('admin.menu.create') }}" class="btn btn-success mb-3"><i class="fas fa-file-medical"></i>
+                        Thêm nhóm menu</a>
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -27,17 +27,15 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $menu->title }}</td>
-                                    <td>{{ $menu->description }}</td>
+                                    <td>{{ $menu->description ? $menu->description : 'Trống' }}</td>
                                     <td class="row">
-                                        <form action="{{ route('admin.menu.up', ['id' => $menu->id]) }}"
-                                            method="post">
+                                        <form action="{{ route('admin.menu.up', ['id' => $menu->id]) }}" method="post">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-secondary"><i
                                                     class="fas fa-arrow-up"></i></button>
                                         </form>
-                                        <form action="{{ route('admin.menu.down', ['id' => $menu->id]) }}"
-                                            method="post">
+                                        <form action="{{ route('admin.menu.down', ['id' => $menu->id]) }}" method="post">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-secondary"><i
@@ -47,7 +45,7 @@
                                     </td>
                                     <td>{{ $menu->childrenMenus->count() }}</td>
                                     <td>
-                                        <div><a href="{{ route('admin.job.index', ['id' => $menu->id]) }}"
+                                        <div><a href="{{ route('admin.childrenmenu.index', ['id' => $menu->id]) }}"
                                                 class="btn btn-info"><i class="fas fa-bars"></i> Danh sách</a>
                                         </div>
                                     </td>

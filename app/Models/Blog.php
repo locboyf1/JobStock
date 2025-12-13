@@ -14,10 +14,21 @@ class Blog extends Model
         'image',
         'is_show',
         'blog_category_id',
-        'user_id'
+        'user_id',
     ];
 
-    public function blog_category(){
+    public function blog_category()
+    {
         return $this->belongsTo(BlogCategory::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Blog_comment::class);
     }
 }

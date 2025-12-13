@@ -48,7 +48,7 @@
                     </div>
                     <div class="form-group">
                         <label>Nội dung</label>
-                        <textarea class="form-control @error('content')is-invalid @enderror" name="content">{{ old('content') }}</textarea>
+                        <textarea class="summernote form-control @error('content')is-invalid @enderror" name="content">{{ old('content') }}</textarea>
                         @error('content')
                             <div class="text-danger">
                                 {{ $message }}

@@ -65,21 +65,22 @@
                                 </div>
                             @endif
                             <div class="chatbot-message-content">
-                                {!! nl2br(e($msg['content'])) !!}
+                                {!! $msg['content'] !!}
                             </div>
                         </div>
                     @endforeach
-
-                    <div wire:loading wire:target="sendMessage" class="chatbot-typing">
-                        <div class="chatbot-typing-bubble">
-                            <div class="chatbot-dots">
-                                <span class="chatbot-dot"></span>
-                                <span class="chatbot-dot"></span>
-                                <span class="chatbot-dot"></span>
+                    @if ($isCallingApi)
+                        <div wire:loading wire:target="sendMessage" class="chatbot-typing">
+                            <div class="chatbot-typing-bubble">
+                                <div class="chatbot-dots">
+                                    <span class="chatbot-dot"></span>
+                                    <span class="chatbot-dot"></span>
+                                    <span class="chatbot-dot"></span>
+                                </div>
+                                <span class="chatbot-typing-text">Đang trả lời...</span>
                             </div>
-                            <span class="chatbot-typing-text">Đang trả lời...</span>
                         </div>
-                    </div>
+                    @endif
                 </div>
 
                 <!-- Footer -->
@@ -114,22 +115,4 @@
             @endif
         </div>
     </div>
-    opacity: 0;
-    transform: scale(0.3);
-    }
-
-    50% {
-    opacity: 1;
-    transform: scale(1.05);
-    }
-
-    70% {
-    transform: scale(0.9);
-    }
-
-    100% {
-    transform: scale(1);
-    }
-    }
-    </style>
 </div>

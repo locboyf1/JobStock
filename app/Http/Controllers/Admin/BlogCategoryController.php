@@ -5,11 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\BlogCategoryRequest;
 use App\Models\BlogCategory;
-use DateTime;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 
 class BlogCategoryController extends Controller
@@ -20,8 +16,9 @@ class BlogCategoryController extends Controller
     public function index(): View
     {
         $categories = BlogCategory::orderBy('position')->get();
+
         return view('admin.blogcategory.index', [
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -46,9 +43,10 @@ class BlogCategoryController extends Controller
             'description' => $validated['description'],
             'is_show' => $request->input('is_show') ? 1 : 0,
             'position' => $number + 1,
-            'alias' => Str::slug($validated['title']) . '-' . time()
+            'alias' => Str::slug($validated['title']).'-'.time(),
         ]);
-        return redirect()->route('admin.blogcategory.index');
+
+        return redirect()->route('admin.blogcategory.index')->with('success', 'Thêm danh mục thành công');
     }
 
     /**
@@ -65,10 +63,11 @@ class BlogCategoryController extends Controller
     public function edit(string $id)
     {
         $category = BlogCategory::find($id);
-        if (!$category) {
-            return abort(404);
+        if (! $category) {
+            return redirect()->route('admin.blogcategory.index')->with('error', 'Danh mục không tồn tại');
         }
-        return view('admin.blogcategory.edit', compact('category'));
+
+        return view('admin.blogcategory.edit', compact('category'))->with('success', 'Lưu danh mục thành công');
     }
 
     /**
@@ -77,10 +76,10 @@ class BlogCategoryController extends Controller
     public function update(BlogCategoryRequest $request, string $id)
     {
         $validated = $request->validated();
-        $category =   BlogCategory::find($id);
+        $category = BlogCategory::find($id);
 
-        if (!$category) {
-            return abort(404);
+        if (! $category) {
+            return redirect()->route('admin.blogcategory.index')->with('error', 'Danh mục không tồn tại');
         }
 
         $category->update(
@@ -88,68 +87,72 @@ class BlogCategoryController extends Controller
                 'title' => $validated['title'],
                 'description' => $validated['description'],
                 'is_show' => $request->input('is_show') ? 1 : 0,
-                'alias' => Str::slug($validated['title']) . '-' . time()
+                'alias' => Str::slug($validated['title']).'-'.time(),
             ]
         );
 
-        return Redirect()->route('admin.blogcategory.index');
+        return redirect()->route('admin.blogcategory.index')->with('success', 'Lưu danh mục thành công');
     }
 
     public function status(string $id)
     {
         $category = BlogCategory::find($id);
-        if (!$category) {
+        if (! $category) {
             return abort(404);
         }
 
         $category->update([
-            'is_show' => $category->is_show ? 0 : 1
+            'is_show' => $category->is_show ? 0 : 1,
         ]);
-
-        return redirect()->route('admin.blogcategory.index');
+        if ($category->is_show) {
+            return redirect()->route('admin.blogcategory.index')->with('success', 'Đã hiển thị danh mục');
+        } else {
+            return redirect()->route('admin.blogcategory.index')->with('success', 'Đã tắt hiển thị danh mục');
+        }
     }
 
     public function up(string $id)
     {
         $upCategory = BlogCategory::find($id);
-        if (!$upCategory) {
-            return abort(404);
+        if (! $upCategory) {
+            return redirect()->route('admin.blogcategory.index')->with('error', 'Danh mục không tồn tại');
         }
 
         if ($upCategory->position != 1) {
             $downCategory = BlogCategory::where('position', $upCategory->position - 1)->first();
 
             $upCategory->update([
-                'position' => $downCategory->position
+                'position' => $downCategory->position,
             ]);
 
             $downCategory->update([
-                'position' => $downCategory->position + 1
+                'position' => $downCategory->position + 1,
             ]);
         }
 
-        return redirect()->route('admin.blogcategory.index');
+        return redirect()->route('admin.blogcategory.index')->with('success', 'Đã di chuyển danh mục lên');
     }
 
     public function down(string $id)
     {
         $downCategory = BlogCategory::find($id);
-        if (!$downCategory) {
-            return abort(404);
+        if (! $downCategory) {
+            return redirect()->route('admin.blogcategory.index')->with('error', 'Danh mục không tồn tại');
         }
 
         if ($downCategory->position != BlogCategory::max('position')) {
             $upCategory = BlogCategory::where('position', $downCategory->position + 1)->first();
 
             $downCategory->update([
-                'position' => $upCategory->position
+                'position' => $upCategory->position,
             ]);
 
             $upCategory->update([
-                'position' => $upCategory->position - 1
+                'position' => $upCategory->position - 1,
             ]);
         }
-        return redirect()->route('admin.blogcategory.index');
+
+        return redirect()->route('admin.blogcategory.index')->with('success', 'Đã di chuyển danh mục xuống');
     }
 
     /**

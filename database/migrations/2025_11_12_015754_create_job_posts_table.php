@@ -17,12 +17,13 @@ return new class extends Migration
             $table->integer('salary_min');
             $table->integer('salary_max')->nullable();
             $table->json('content');
-            $table->date('expiredTime')->nullable();
+            $table->date('expired_time')->nullable();
             $table->boolean('is_active');
             $table->boolean('is_confirmed')->nullable();
             $table->integer('quantity');
             $table->string('description', 5000);
             $table->integer('experience');
+            $table->json('vector')->nullable();
 
             $table->foreignId('job_company_id')->constrained('job_companies')->onDelete('cascade');
             $table->foreignId('job_type_id')->constrained('job_types')->onDelete('cascade');

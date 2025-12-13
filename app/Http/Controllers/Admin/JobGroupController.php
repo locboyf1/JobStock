@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\JobGroupRequest;
-use Illuminate\Http\Request;
 use App\Models\JobGroup;
 
 class JobGroupController extends Controller
@@ -15,8 +14,9 @@ class JobGroupController extends Controller
     public function index()
     {
         $jobGroups = JobGroup::orderBy('position')->get();
+
         return view('admin.jobgroup.index', [
-            'jobGroups' => $jobGroups
+            'jobGroups' => $jobGroups,
         ]);
     }
 
@@ -39,9 +39,10 @@ class JobGroupController extends Controller
             'title' => $validated['title'],
             'description' => $validated['description'],
             'is_show' => $request->input('is_show') ? 1 : 0,
-            'position' => $number + 1
+            'position' => $number + 1,
         ]);
-        return redirect()->route('admin.jobgroup.index');
+
+        return redirect()->route('admin.jobgroup.index')->with('success', 'Đã thêm nhóm ngành');
     }
 
     /**
@@ -58,10 +59,13 @@ class JobGroupController extends Controller
     public function edit(string $id)
     {
         $jobGroup = JobGroup::find($id);
-        if (!$jobGroup) {
-            return abort(404);
+        if (! $jobGroup) {
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
-        return view('admin.jobgroup.edit', compact('jobGroup'));
+
+        return view('admin.jobgroup.edit', [
+            'jobGroup' => $jobGroup,
+        ]);
     }
 
     /**
@@ -71,17 +75,17 @@ class JobGroupController extends Controller
     {
         $validated = $request->validated();
         $jobGroup = JobGroup::find($id);
-        if (!$jobGroup) {
-            return abort(404);
+        if (! $jobGroup) {
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
 
         $jobGroup->update([
             'title' => $validated['title'],
             'description' => $validated['description'],
-            'is_show' => $request->input('is_show') ? 1 : 0
+            'is_show' => $request->input('is_show') ? 1 : 0,
         ]);
 
-        return redirect()->route('admin.jobgroup.index');
+        return redirect()->route('admin.jobgroup.index')->with('success', 'Nhóm ngành đã được cập nhật');
     }
 
     /**
@@ -95,57 +99,58 @@ class JobGroupController extends Controller
     public function status(string $id)
     {
         $jobGroup = JobGroup::find($id);
-        if (!$jobGroup) {
-            return abort(404);
+        if (! $jobGroup) {
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
 
         $jobGroup->update([
-            'is_show' => $jobGroup->is_show ? 0 : 1
+            'is_show' => $jobGroup->is_show ? 0 : 1,
         ]);
 
-        return redirect()->route('admin.jobgroup.index');
+        return redirect()->route('admin.jobgroup.index')->with('success', 'Nhóm ngành đã được thay đổi trạng thái');
     }
 
     public function up(string $id)
     {
         $upJobGroup = JobGroup::find($id);
-        if (!$upJobGroup) {
-            return abort(404);
+        if (! $upJobGroup) {
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
 
         if ($upJobGroup->position != 1) {
             $downJobGroup = JobGroup::where('position', $upJobGroup->position - 1)->first();
 
             $upJobGroup->update([
-                'position' => $downJobGroup->position
+                'position' => $downJobGroup->position,
             ]);
 
             $downJobGroup->update([
-                'position' => $downJobGroup->position + 1
+                'position' => $downJobGroup->position + 1,
             ]);
         }
 
-        return redirect()->route('admin.jobgroup.index');
+        return redirect()->route('admin.jobgroup.index')->with('success', 'Nhóm ngành đã được di chuyển');
     }
 
     public function down(string $id)
     {
         $downJobGroup = JobGroup::find($id);
-        if (!$downJobGroup) {
-            return abort(404);
+        if (! $downJobGroup) {
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
 
         if ($downJobGroup->position != JobGroup::max('position')) {
             $upJobGroup = JobGroup::where('position', $downJobGroup->position + 1)->first();
 
             $downJobGroup->update([
-                'position' => $upJobGroup->position
+                'position' => $upJobGroup->position,
             ]);
 
             $upJobGroup->update([
-                'position' => $upJobGroup->position - 1
+                'position' => $upJobGroup->position - 1,
             ]);
         }
-        return redirect()->route('admin.jobgroup.index');
+
+        return redirect()->route('admin.jobgroup.index')->with('success', 'Nhóm ngành đã được di chuyển');
     }
 }

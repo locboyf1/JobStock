@@ -69,7 +69,7 @@
             <div class="row extra-mrg">
                 @foreach ($posts as $post)
                     <div class="col-md-4 col-sm-6">
-                        <div class="grid-view brows-job-list">
+                        <div class="grid-view brows-job-list" style="height: 350px">
                             <div class="brows-job-company-img">
                                 <img src="{{ asset('storage/' . $post->company->logo) }}" class="img-responsive"
                                     alt="" />
@@ -84,7 +84,7 @@
                             <div class="brows-job-type">
                                 <span class="full-time">{{ $post->jobType->name }}</span>
                             </div>
-                            <ul class="grid-view-caption">
+                            <ul class="grid-view-caption" style="position: absolute; bottom: 0px">
                                 <li>
                                     <div class="brows-job-location">
                                         <p><i

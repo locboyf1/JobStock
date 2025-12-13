@@ -17,7 +17,7 @@ class JobController extends Controller
 
         $jobGroup = JobGroup::find($id);
         if (! $jobGroup) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
         $jobs = $jobGroup->jobs()->orderBy('position')->get();
 
@@ -34,7 +34,7 @@ class JobController extends Controller
     {
         $jobGroup = JobGroup::find($id);
         if (! $jobGroup) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
 
         return view('admin.job.create', [
@@ -49,7 +49,7 @@ class JobController extends Controller
     {
         $jobGroup = JobGroup::find($id);
         if (! $jobGroup) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Nhóm ngành không tồn tại');
         }
 
         $validated = $request->validated();
@@ -61,7 +61,7 @@ class JobController extends Controller
             'position' => $number + 1,
         ]);
 
-        return redirect()->route('admin.job.index', $id);
+        return redirect()->route('admin.job.index', $id)->with('success', 'Đã thêm công việc');
     }
 
     /**
@@ -79,10 +79,12 @@ class JobController extends Controller
     {
         $job = JobCompany::find($id);
         if (! $job) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Công việc không tồn tại');
         }
 
-        return view('admin.job.edit', compact('job'));
+        return view('admin.job.edit', [
+            'job' => $job,
+        ]);
     }
 
     /**
@@ -93,7 +95,7 @@ class JobController extends Controller
         $validated = $request->validated();
         $job = JobCompany::find($id);
         if (! $job) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Công việc không tồn tại');
         }
 
         $job->update([
@@ -102,28 +104,28 @@ class JobController extends Controller
             'is_show' => $request->input('is_show') ? 1 : 0,
         ]);
 
-        return redirect()->route('admin.job.index', $job->job_group_id);
+        return redirect()->route('admin.job.index', $job->job_group_id)->with('success', 'Công việc đã được cập nhật');
     }
 
     public function status(string $id)
     {
         $job = JobCompany::find($id);
         if (! $job) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Công việc không tồn tại');
         }
 
         $job->update([
             'is_show' => $job->is_show ? 0 : 1,
         ]);
 
-        return redirect()->route('admin.job.index', $job->job_group_id);
+        return redirect()->route('admin.job.index', $job->job_group_id)->with('success', 'Công việc đã được thay đổi trạng thái');
     }
 
     public function up(string $id)
     {
         $upJob = JobCompany::find($id);
         if (! $upJob) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Công việc không tồn tại');
         }
 
         if ($upJob->position != 1) {
@@ -138,14 +140,14 @@ class JobController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.job.index', ['id' => $upJob->job_group_id]);
+        return redirect()->route('admin.job.index', ['id' => $upJob->job_group_id])->with('success', 'Công việc đã được di chuyển');
     }
 
     public function down(string $id)
     {
         $downJob = JobCompany::find($id);
         if (! $downJob) {
-            return abort(404);
+            return redirect()->route('admin.jobgroup.index')->with('error', 'Công việc không tồn tại');
         }
 
         if ($downJob->position != JobCompany::where('job_group_id', $downJob->job_group_id)->max('position')) {
@@ -160,7 +162,7 @@ class JobController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.job.index', ['id' => $downJob->job_group_id]);
+        return redirect()->route('admin.job.index', ['id' => $downJob->job_group_id])->with('success', 'Công việc đã được di chuyển');
     }
 
     /**

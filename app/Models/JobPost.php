@@ -12,7 +12,7 @@ class JobPost extends Model
         'salary_min',
         'salary_max',
         'content',
-        'expiredTime',
+        'expired_time',
         'is_active',
         'is_confirmed',
         'address',
@@ -22,6 +22,7 @@ class JobPost extends Model
         'description',
         'experience',
         'quantity',
+        'vector',
     ];
 
     public function jobType()
@@ -44,6 +45,27 @@ class JobPost extends Model
         return $this->belongsToMany(Tag::class, 'job_post_tags');
     }
 
+    public function postReports()
+    {
+        return $this->hasMany(PostReport::class);
+    }
+
+    public function getIsShowAttribute()
+    {
+        return $this->is_active && $this->company->is_confirmed;
+    }
+
+    public function scopeIsShow($query)
+    {
+        return $query->where('is_active', 1)->whereHas('company', function ($q) {
+            $q->where('is_confirmed', 1);
+        });
+    }
+
     protected $casts = [
-        'content' => 'array'];
+        'content' => 'array',
+        'created_at' => 'datetime',
+        'expired_time' => 'datetime',
+        'vector' => 'array',
+    ];
 }

@@ -13,6 +13,13 @@ class Chatbot extends Component
 
     public $history = [];
 
+    public $isCallingApi = false;
+
+    public function __construct()
+    {
+        $this->history = session()->get('history', []);
+    }
+
     public function sendMessage(ChatbotService $chatbotService)
     {
         $this->validate(
@@ -24,21 +31,23 @@ class Chatbot extends Component
                 'message.max' => 'Tin nhắn không được vượt quá 500 ký tự',
             ]
         );
+        $history = $this->history;
 
-        $this->history[] = [
+        $history[] = [
             'role' => 'user',
             'content' => $this->message,
         ];
 
-        $currentHistory = $this->history;
+        $this->isCallingApi = true;
+        $response = $chatbotService->sendMessage($this->message[0], $history);
+        $this->isCallingApi = false;
 
-        $response = $chatbotService->sendMessage($currentHistory);
-
-        $this->history[] = [
+        $history[] = [
             'role' => 'assistant',
             'content' => $response,
         ];
-
+        session()->put('history', $history);
+        $this->history = $history;
         $this->message = '';
     }
 

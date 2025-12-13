@@ -31,7 +31,7 @@ class JobRequest extends FormRequest
             'experience' => 'required|integer|min:0',
             'quantity' => 'required',
             'content' => 'required',
-            'expiredTime' => 'required|date|after:today',
+            'expired_time' => 'required|date|after:today',
         ];
     }
 
@@ -51,9 +51,9 @@ class JobRequest extends FormRequest
             'salary_max.gt' => 'Lương tối đa phải lớn hơn lương tối thiểu',
             'experience.required' => 'Vui lòng nhập năm kinh nghiệm',
             'quantity.required' => 'Vui lòng nhập số lượng tuyển',
-            'expiredTime.required' => 'Vui lòng chọn ngày hết hạn',
-            'expiredTime.date' => 'Ngày hết hạn phải là ngày',
-            'expiredTime.after' => 'Ngày hết hạn phải sau ngày hôm nay',
+            'expired_time.required' => 'Vui lòng chọn ngày hết hạn',
+            'expired_time.date' => 'Ngày hết hạn phải là ngày',
+            'expired_time.after' => 'Ngày hết hạn phải sau ngày hôm nay',
             'experience.integer' => 'Năm kinh nghiệm phải là số',
             'experience.min' => 'Năm kinh nghiệm phải từ 0 trở lên',
             'content.required' => 'Vui lòng nhập nội dung',

@@ -194,7 +194,8 @@
                                     <img src="{{ asset('storage/' . $company->confirm_image) }}" width="100%" />
                                     @if ($company->confirm_updated_image != null)
                                         <h4>Giấy tờ chứng minh sự thay đổi thông tin</h4>
-                                        <img src="{{ asset('storage/' . $company->confirm_updated_image) }}" width="100%" />
+                                        <img src="{{ asset('storage/' . $company->confirm_updated_image) }}"
+                                            width="100%" />
                                     @endif
                                     <div class="text-right mt-3">
                                         <form action="{{ route('admin.company.approve', $company->id) }}" method="post"

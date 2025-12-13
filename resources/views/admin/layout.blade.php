@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="{{ asset('admins/assets/css/components.css') }}">
     <link rel="stylesheet" href="{{ asset('admins/assets/bundles/izitoast/css/iziToast.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admins/assets/css/custom.css') }}">
+    <link rel="stylesheet" href="{{ asset('admins/assets/bundles/summernote/summernote-bs4.css') }}">
+
     <link rel='shortcut icon' type='image/x-icon' href="{{ asset('admins/assets/img/favicon.ico') }}" />
 </head>
 
@@ -266,6 +268,7 @@
     <script src="{{ asset('admins/assets/bundles/apexcharts/apexcharts.min.js') }}"></script>
     <script src="{{ asset('admins/assets/js/page/index.js') }}"></script>
     <script src="{{ asset('admins/assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
+    <script src="{{ asset('admins/assets/bundles/summernote/summernote-bs4.js') }}"></script>
 
     <script src="{{ asset('admins/assets/js/scripts.js') }}"></script>
     <script src="{{ asset('admins/assets/js/custom.js') }}"></script>

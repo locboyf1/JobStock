@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CompanyController extends Controller
 {
@@ -14,6 +15,7 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = Company::where('is_confirmed', null)->orderBy('updated_at', 'desc')->get();
+
         return view('admin.company.index', ['companies' => $companies]);
     }
 
@@ -39,36 +41,44 @@ class CompanyController extends Controller
     public function show(string $id)
     {
         $company = Company::find($id);
-        if (!$company) {
-            return abort(404);
+        if (! $company) {
+            return redirect()->route('admin.company.index')->with('error', 'Không tìm thấy công ty');
         }
+
         return view('admin.company.show', ['company' => $company]);
     }
 
     public function approve(string $id)
     {
         $company = Company::find($id);
-        if (!$company) {
-            return abort(404);
+        if (! $company) {
+            return redirect()->route('admin.company.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
         }
         $company->update([
-            'is_confirmed' => 1
+            'is_confirmed' => 1,
         ]);
-        return redirect()->route('admin.company.index');
+        Mail::html('Chúc mừng công ty '.$company->title.' của bạn đã được duyệt, hãy mau mau đăng nhập để trải nghiệm tính năng tuyển dụng tuyệt vời trên JobStock nhé.<br>Thân mến.', function ($message) use ($company) {
+            $message->to($company->email)->subject('JobStock - Xin chúc mừng');
+        });
+
+        return redirect()->route('admin.company.index')->with('success', 'Đã duyệt công ty '.$company->title);
     }
 
     public function unapprove(string $id)
     {
         $company = Company::find($id);
-        if (!$company) {
-            return abort(404);
+        if (! $company) {
+            return redirect()->route('admin.company.index')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
         }
         $company->update([
-            'is_confirmed' => 0
+            'is_confirmed' => 0,
         ]);
-        return redirect()->route('admin.company.index');
+        Mail::html('Chúng tôi rất tiếc vì đã phải từ chối công ty '.$company->title.', hãy thử sửa thông tin lại lần nữa nhé.<br>Xin lỗi vì sự bất tiện này.<br>Thân mến.', function ($message) use ($company) {
+            $message->to($company->email)->subject('JobStock - Mong quý khách thông cảm');
+        });
+
+        return redirect()->route('admin.company.index')->with('success', 'Đã từ chối công ty '.$company->title);
     }
-    
 
     /**
      * Show the form for editing the specified resource.

@@ -139,11 +139,19 @@
     border-bottom-right-radius: 4px !important;
 }
 
+.chatbot-message.user .chatbot-message-content * {
+    color: white !important;
+}
+
 .chatbot-message.assistant .chatbot-message-content {
     background-color: white !important;
     color: #1f2937 !important;
     border-bottom-left-radius: 4px !important;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
+}
+
+.chatbot-message.assistant .chatbot-message-content * {
+    color: #1f2937 !important;
 }
 
 /* Typing Indicator */

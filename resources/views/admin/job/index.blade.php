@@ -10,7 +10,7 @@
                 <div class="card-body">
                     <a href="{{ route('admin.job.create', ['id' => $jobGroup->id]) }}" class="btn btn-success mb-3"><i
                             class="fas fa-file-medical"></i> Thêm ngành</a>
-                            <a href="{{ route('admin.jobgroup.index') }}" class="btn btn-secondary mb-3"><i
+                    <a href="{{ route('admin.jobgroup.index') }}" class="btn btn-secondary mb-3"><i
                             class="fas fa-arrow-left"></i> Quay lại</a>
                     <table class="table table-hover">
                         <thead>
@@ -29,17 +29,15 @@
                                 <tr>
                                     <th scope="row">{{ $loop->iteration }}</th>
                                     <td>{{ $job->title }}</td>
-                                    <td>{{ $job->description }}</td>
+                                    <td>{{ $job->description ? $job->description : 'Trống' }}</td>
                                     <td class="row">
-                                        <form action="{{ route('admin.job.up', ['id' => $job->id]) }}"
-                                            method="post">
+                                        <form action="{{ route('admin.job.up', ['id' => $job->id]) }}" method="post">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-secondary"><i
                                                     class="fas fa-arrow-up"></i></button>
                                         </form>
-                                        <form action="{{ route('admin.job.down', ['id' => $job->id]) }}"
-                                            method="post">
+                                        <form action="{{ route('admin.job.down', ['id' => $job->id]) }}" method="post">
                                             @csrf
                                             @method('PUT')
                                             <button type="submit" class="btn btn-secondary"><i

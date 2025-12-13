@@ -91,7 +91,8 @@
                             @if (Auth::check() && Auth::user()->role->alias == config('account.ROLE_USER'))
                                 <a href="#" class="footer-btn grn-btn" title="">Ứng tuyển</a>
                             @endif
-                            <a href="#" class="footer-btn btn-danger" title="">Tố cáo</a>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#signup"
+                                class="footer-btn btn-danger">Tố cáo</a>
                         </div>
                     </div>
                 </div>
@@ -118,4 +119,87 @@
     </section>
     <!-- Job full detail End -->
 
+    <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="tab">
+                        <!-- Nav tabs -->
+                        <ul class="nav nav-tabs">
+                            <li class="active" style="width: 100%;"><a>Nhập thông tin tố cáo</a></li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div class="tab-content" id="myModalLabel2">
+                            <div role="tabpanel" class="tab-pane fade in active" id="login">
+                                <div class="subscribe wow fadeInUp">
+                                    <form action="{{ route('report', ['id' => $post->id]) }}" class="form-inline"
+                                        method="post" novalidate>
+                                        @csrf
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+
+                                                <h5>Bài đăng: {{ $post->title }}</h5>
+                                                <h5>Công ty: {{ $post->company->title }}</h5>
+                                                <label for="email">Email</label>
+                                                <input type="email" name="email" value="{{ old('email') }}"
+                                                    class="form-control" placeholder="Nhập email của bạn" required="">
+                                                @error('email')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <label for="name">Tên</label>
+                                                <input type="text" name="name" value="{{ old('name') }}"
+                                                    class="form-control" placeholder="Tên của bạn" required="">
+                                                @error('name')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <label for="title">Tiêu đề tố cáo</label>
+                                                <input type="text" name="title" value="{{ old('title') }}"
+                                                    class="form-control" placeholder="Tiêu đề tố cáo" required="">
+                                                @error('title')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <label for="content">Nội dung tố cáo</label>
+                                                <textarea name="content" id="content" class="summernote" placeholder="Nội dung tố cáo" required="">{{ old('content') }}</textarea>
+                                                @error('content')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                                <div class="center">
+                                                    <button type="submit" id="login-btn" class="submit-btn"> Gửi tố cáo
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            $('.summernote').summernote({
+                dialogsInBody: true,
+                minHeight: 200,
+                toolbar: [
+                    ["style", ["bold", "italic", "underline"]],
+                    ['insert', ['link', 'picture', 'video']],
+                    ['table', ['table']],
+                ]
+            });
+        })
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            @if ($errors->any())
+                $('#signup').modal('show');
+            @endif
+        })
+    </script>
 @endsection

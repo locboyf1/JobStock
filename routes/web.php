@@ -1,19 +1,28 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobCompanyController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\PostReportController;
+use App\Http\Middleware\AuthPageMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::redirect('/home', '/');
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::get('/register', [AuthController::class, 'register'])->name('register');
-Route::post('/register', [AuthController::class, 'postRegister'])->name('postRegister');
-Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+Route::middleware(AuthPageMiddleware::class)->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::post('/register', [AuthController::class, 'postRegister'])->name('postRegister');
+    Route::post('/login', [AuthController::class, 'postLogin'])->name('postLogin');
+    Route::get('/forget-password', [AuthController::class, 'forgetPassword'])->name('forgetPassword');
+    Route::post('/forget-password', [AuthController::class, 'postForgetPassword'])->name('postForgetPassword');
+    Route::get('/reset-password', [AuthController::class, 'resetPassword'])->name('resetPassword');
+    Route::post('/reset-password', [AuthController::class, 'postResetPassword'])->name('postResetPassword');
+});
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->prefix('company')->name('company.')->group(function () {
@@ -29,6 +38,7 @@ Route::middleware('auth')->prefix('company')->name('company.')->group(function (
         Route::post('/store', [JobCompanyController::class, 'store'])->name('store');
         Route::get('/edit/{id}', [JobCompanyController::class, 'edit'])->name('edit');
         Route::put('/update/{id}', [JobCompanyController::class, 'update'])->name('update');
+        Route::put('/status/{id}', [JobCompanyController::class, 'status'])->name('status');
     });
 
 });
@@ -36,4 +46,11 @@ Route::middleware('auth')->prefix('company')->name('company.')->group(function (
 Route::prefix('job')->name('job.')->group(function () {
     Route::get('/', [JobController::class, 'index'])->name('index');
     Route::get('/show/{id}', [JobController::class, 'show'])->name('show');
+});
+
+Route::post('/report/{id}', [PostReportController::class, 'store'])->name('report');
+
+Route::prefix('blog')->name('blog.')->group(function () {
+    Route::get('/', [BlogController::class, 'index'])->name('index');
+    Route::get('/show/{id}/{alias}', [BlogController::class, 'show'])->name('show');
 });

@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
-use Illuminate\Http\Request;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Models\BlogCategory;
-
 
 class BlogController extends Controller
 {
@@ -20,8 +18,9 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::orderBy('created_at')->get();
+
         return view('admin.blog.index', [
-            'blogs' => $blogs
+            'blogs' => $blogs,
         ]);
     }
 
@@ -31,8 +30,9 @@ class BlogController extends Controller
     public function create()
     {
         $categories = BlogCategory::orderBy('position')->get();
+
         return view('admin.blog.create', [
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -55,10 +55,11 @@ class BlogController extends Controller
             'blog_category_id' => $validated['blog_category_id'],
             'image' => $imagePath ? $imagePath : '',
             'is_show' => $request->input('is_show') ? 1 : 0,
-            'alias' => Str::slug($validated['title']) . '-' . time(),
-            'user_id' => 1
+            'alias' => Str::slug($validated['title']).'-'.time(),
+            'user_id' => 1,
         ]);
-        return redirect()->route('admin.blog.index');
+
+        return redirect()->route('admin.blog.index')->with('success', 'Bài viết đã được tạo thành công');
     }
 
     /**
@@ -75,14 +76,15 @@ class BlogController extends Controller
     public function edit(string $id)
     {
         $blog = Blog::find($id);
-        if (!$blog) {
-            return abort(404);
-        };
+        if (! $blog) {
+            return redirect()->route('admin.blog.index')->with('error', 'Bài viết không tồn tại');
+        }
 
         $categories = BlogCategory::orderBy('position')->get();
 
-        return view('admin.blog.edit', compact('blog'), [
-            'categories' => $categories
+        return view('admin.blog.edit', [
+            'blog' => $blog,
+            'categories' => $categories,
         ]);
     }
 
@@ -94,13 +96,13 @@ class BlogController extends Controller
         $validated = $request->validated();
 
         $blog = Blog::find($id);
-        if (!$blog) {
-            return abort(404);
+        if (! $blog) {
+            return redirect()->route('admin.blog.index')->with('error', 'Bài viết không tồn tại');
         }
         $imagePath = $blog->image;
 
         if ($request->hasFile('image')) {
-           Storage::disk('public')->delete($blog->image);
+            Storage::disk('public')->delete($blog->image);
             $imagePath = $request->file('image')->store('uploads/images', 'public');
         }
 
@@ -112,12 +114,12 @@ class BlogController extends Controller
                 'image' => $imagePath,
                 'blog_category_id' => $validated['blog_category_id'],
                 'is_show' => $request->input('is_show') ? 1 : 0,
-                'alias' => Str::slug($validated['title']) . '-' . time(),
-                'user_id' => $blog->user_id
+                'alias' => Str::slug($validated['title']).'-'.time(),
+                'user_id' => $blog->user_id,
             ]
         );
 
-        return redirect()->route('admin.blog.index');
+        return redirect()->route('admin.blog.index')->with('success', 'Bài viết đã được cập nhật thành công');
     }
 
     /**
@@ -131,12 +133,18 @@ class BlogController extends Controller
     public function status(string $id)
     {
         $blog = Blog::find($id);
-        if (!$blog) {
-            return abort(404);
+        if (! $blog) {
+            return redirect()->route('admin.blog.index')->with('error', 'Bài viết không tồn tại');
         }
+
         $blog->update([
-            'is_show' => $blog->is_show ? 0 : 1
+            'is_show' => $blog->is_show ? 0 : 1,
         ]);
-        return redirect()->route('admin.blog.index');
+
+        if ($blog->is_show) {
+            return redirect()->route('admin.blog.index')->with('success', 'Đã hiển thị bài viết');
+        } else {
+            return redirect()->route('admin.blog.index')->with('success', 'Đã tắt hiển thị bài viết');
+        }
     }
 }

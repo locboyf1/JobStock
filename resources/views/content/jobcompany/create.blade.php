@@ -140,8 +140,8 @@
                             <div class="input-group">
                                 <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                 <input type="text" id="company-dob" data-lang="vi" data-large-mode="true"
-                                    data-theme="my-style" class="form-control" readonly="" name="expiredTime"
-                                    value="{{ old('expiredTime') }}">
+                                    data-theme="my-style" class="form-control" readonly="" name="expired_time"
+                                    value="{{ old('expired_time') }}">
                             </div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                     @error('salary_max')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
-                    @error('expiredTime')
+                    @error('expired_time')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                     @error('experience')

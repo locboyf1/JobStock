@@ -20,6 +20,9 @@ class JobCompanyController extends Controller
     public function index()
     {
         $company = Auth::user()->company;
+        if ($company == null) {
+            return redirect()->route('home')->with('info', 'Vui lòng đăng ký công ty trước khi đăng bài tuyển dụng.');
+        }
         $jobs = JobPost::where('company_id', $company->id)->orderBy('created_at', 'desc')->get();
 
         return view('content.jobcompany.index', ['jobs' => $jobs]);
@@ -58,7 +61,7 @@ class JobCompanyController extends Controller
             'experience' => $validated['experience'],
             'quantity' => $validated['quantity'],
             'content' => $validated['content'],
-            'expiredTime' => Carbon::createFromFormat('m/d/Y', $validated['expiredTime'])->format('Y-m-d'),
+            'expired_time' => Carbon::createFromFormat('m/d/Y', $validated['expired_time'])->format('Y-m-d'),
             'company_id' => $company->id,
             'is_active' => $company->is_confirmed ? true : false,
         ]);
@@ -82,7 +85,25 @@ class JobCompanyController extends Controller
             $post->tags()->sync($tagsId);
         }
 
-        return redirect()->route('company.job.index');
+        return redirect()->route('company.job.index')->with('success', 'Tin tuyển dụng đã được tạo thành công.');
+    }
+
+    public function status(string $id)
+    {
+        $post = JobPost::find($id);
+        if ($post == null) {
+            return redirect()->route('company.job.index')->with('error', 'Tin tuyển dụng không tồn tại.');
+        }
+
+        $post->update([
+            'is_active' => ! $post->is_active,
+        ]);
+
+        if ($post->company->is_confirmed != true) {
+            return redirect()->route('company.job.index')->with('info', 'Tùy chỉnh sẽ tự động áp dụng ngay khi công ty bạn được chấp nhận.');
+        }
+
+        return redirect()->route('company.job.index')->with('success', 'Tin tuyển dụng đã được cập nhật thành công.');
     }
 
     /**
@@ -100,7 +121,7 @@ class JobCompanyController extends Controller
     {
         $post = JobPost::find($id);
         if ($post == null) {
-            return redirect()->route('company.job.index');
+            return redirect()->route('company.job.index')->with('error', 'Tin tuyển dụng không tồn tại.');
         }
 
         $tags = $post->tags->pluck('name')->implode(', ');
@@ -117,7 +138,7 @@ class JobCompanyController extends Controller
         $company = Auth::user()->company;
         $post = JobPost::find($id);
         if ($post == null) {
-            return redirect()->route('company.job.index');
+            return redirect()->route('company.job.index')->with('error', 'Tin tuyển dụng không tồn tại.');
         }
 
         $validated = $request->validated();
@@ -129,7 +150,7 @@ class JobCompanyController extends Controller
             'experience' => $validated['experience'],
             'quantity' => $validated['quantity'],
             'content' => $validated['content'],
-            'expiredTime' => Carbon::createFromFormat('m/d/Y', $validated['expiredTime'])->format('Y-m-d'),
+            'expired_time' => Carbon::createFromFormat('m/d/Y', $validated['expired_time'])->format('Y-m-d'),
             'company_id' => $company->id,
             'is_active' => $company->is_confirmed ? true : false,
         ]);
@@ -153,7 +174,7 @@ class JobCompanyController extends Controller
             $post->tags()->sync($tagsId);
         }
 
-        return redirect()->route('company.job.index');
+        return redirect()->route('company.job.index')->with('success', 'Tin tuyển dụng đã được cập nhật thành công.');
     }
 
     /**

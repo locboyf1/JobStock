@@ -3,7 +3,8 @@
 @section('content')
     <section class="section">
         <div class="section-body">
-            <form class="card" action="{{ route('admin.jobgroup.update', ['id' => $jobGroup->id]) }}" method="post" novalidate>
+            <form class="card" action="{{ route('admin.jobgroup.update', ['id' => $jobGroup->id]) }}" method="post"
+                novalidate>
                 @csrf
                 @method('PUT')
                 <div class="card-header">
@@ -12,7 +13,8 @@
                 <div class="card-body">
                     <div class="form-group">
                         <label>Tên nhóm ngành</label>
-                        <input type="text" class="form-control @error('title')is-invalid @enderror" name="title" value="{{ $jobGroup->title }}">
+                        <input type="text" class="form-control @error('title')is-invalid @enderror" name="title"
+                            value="{{ $jobGroup->title }}">
                         @error('title')
                             <div class="text-danger">
                                 {{ $message }}
@@ -31,7 +33,8 @@
                     <div class="form-group">
                         <label class="d-block">Tùy chọn</label>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="defaultCheck1" name="is_show" {{ $jobGroup->is_show ? 'checked' : ''}}>
+                            <input class="form-check-input" type="checkbox" id="defaultCheck1" name="is_show"
+                                {{ $jobGroup->is_show ? 'checked' : '' }}>
                             <label class="form-check-label" for="defaultCheck1">
                                 Hiển thị
                             </label>

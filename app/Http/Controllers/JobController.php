@@ -8,12 +8,13 @@ use App\Models\JobPost;
 use App\Models\JobType;
 use App\Utilities\functions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $posts = JobPost::query()->where('is_active', 1);
+        $posts = JobPost::query()->isShow();
 
         if ($request->filled('keyword')) {
             $keyword = $request->keyword;
@@ -21,7 +22,17 @@ class JobController extends Controller
             $posts->where(function ($query) use ($keyword) {
 
                 $query->where('title', 'like', '%'.$keyword.'%')
-                    ->orWhere('description', 'like', '%'.$keyword.'%');
+                    ->orWhere('description', 'like', '%'.$keyword.'%')
+                    ->orWhere(function ($q) use ($keyword) {
+                        $q->whereHas('company', function ($q1) use ($keyword) {
+                            $q1->where('title', 'like', '%'.$keyword.'%')
+                                ->orWhere('description', 'like', '%'.$keyword.'%');
+                        });
+                    })
+                    ->orWhereHas('tags', function ($q2) use ($keyword) {
+                        $q2->where('slug', 'like', '%'.Str::slug($keyword).'%')
+                            ->orWhere('name', 'like', '%'.$keyword.'%');
+                    });
             });
         }
 
@@ -38,7 +49,7 @@ class JobController extends Controller
         if ($request->filled('province_id')) {
             $province_id = $request->province_id;
             $posts->whereHas('company', function ($q) use ($province_id) {
-                $q->where('province_id', $province_id);
+                $q->orWhere('province_id', $province_id);
             });
         }
 
@@ -47,7 +58,7 @@ class JobController extends Controller
             $posts->where('job_type_id', $job_type_id);
         }
 
-        $posts = $posts->orderBy('created_at', 'desc')->paginate(10)->withQueryString();
+        $posts = $posts->orderBy('created_at', 'desc')->paginate(9)->withQueryString();
 
         $provinces = functions::getListProvince();
         $job_groups = JobGroup::where('is_show', 1)->orderBy('position', 'asc')->get();
@@ -61,7 +72,7 @@ class JobController extends Controller
     {
         $post = JobPost::findOrFail($id);
         if ($post->is_active == 0 || $post == null) {
-            abort(404);
+            return redirect()->back()->with('error', 'Tin tuyển dụng không tồn tại hoặc đã bị ẩn');
         }
 
         return view('content.job.show', ['post' => $post]);

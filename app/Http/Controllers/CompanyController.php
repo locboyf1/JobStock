@@ -36,7 +36,7 @@ class CompanyController extends Controller
         $provinces = functions::getListProvince();
 
         if ($company != null) {
-            return redirect()->Route('home');
+            return redirect()->Route('home')->with('info', 'Công ty của bạn đã tồn tại');
         }
 
         return view('content.company.terms', ['provinces' => $provinces]);
@@ -49,7 +49,7 @@ class CompanyController extends Controller
         $user = User::find($userId);
         $company = $user->company;
         if ($company != null) {
-            return redirect()->route('home');
+            return redirect()->route('home')->with('info', 'Công ty của bạn đã tồn tại');
         }
 
         $logoPath = null;
@@ -91,7 +91,7 @@ class CompanyController extends Controller
             'role_id' => $role->id,
         ]);
 
-        return redirect()->route('home');
+        return redirect()->route('home')->with('success', 'Đăng ký thành công, hãy kiên nhẫn chờ phản hồi từ chúng tôi nhé');
     }
 
     public function edit()
@@ -99,6 +99,10 @@ class CompanyController extends Controller
         $userId = Auth::id();
         $user = User::find($userId);
         $company = $user->company;
+
+        if ($company == null) {
+            return redirect()->route('home')->with('error', 'Bạn chưa đăng ký công ty');
+        }
         $provinces = functions::getListProvince();
 
         return view('content.company.edit', ['company' => $company, 'provinces' => $provinces]);
@@ -112,7 +116,7 @@ class CompanyController extends Controller
         $company = $user->company;
 
         if ($id != $company->id) {
-            return abort(404);
+            return redirect()->route('home')->with('error', 'Có lỗi xảy ra, vui lòng thử lại');
         }
 
         $logoPath = $company->logo;
@@ -149,6 +153,6 @@ class CompanyController extends Controller
             'is_show' => $request->input('is_show') ? 1 : 0,
         ]);
 
-        return redirect()->route('company.index');
+        return redirect()->route('company.index')->with('success', 'Cập nhật thông tin công ty thành công, hãy kiên nhẫn chờ phản hồi từ chúng tôi nhé');
     }
 }

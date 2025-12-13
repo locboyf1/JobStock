@@ -46,18 +46,31 @@
                 @foreach ($jobs as $job)
                     <div class="col-md-6 col-sm-6">
                         <div class="manage-resume-box">
-                            <div class="col-md-11 col-sm-11">
+                            <div class="col-md-12 col-sm-12">
                                 <h4>{{ $job->title }}</h4>
                                 <hr>
                                 <p>{{ $job->description }}</p>
                                 <p>{{ $job->address }}</p>
-                                <p>{{ $job->jobType->name }}</p>
+                                <p>Loại hình: {{ $job->jobType->name }}</p>
                             </div>
-                            <div class="col-md-1 col-sm-1">
-                                <a href="{{ route('company.job.edit', $job->id) }}"><i class="fa fa-pencil"
-                                        aria-hidden="true"></i></a>
+
+                            <div class="col-md-7 col-sm-7">
+                                <a class="btn btn-primary" href="{{ route('company.job.edit', $job->id) }}">Sửa</a>
+                                <form action="{{ route('company.job.status', $job->id) }}" method="POST"
+                                    style="display: inline;">
+                                    @csrf
+                                    @method('PUT')
+                                    <button class="btn btn-{{ $job->is_active ? 'danger' : 'success' }}"
+                                        type="submit">{{ $job->is_active ? 'Ẩn' : 'Hiện' }}
+                                    </button>
+                                </form>
+
+                            </div>
+                            <div class="col-md-5 col-sm-5">
+                                <h5>Trạng thái: {{ $job->isShow ? 'Đang hiện' : 'Đang ẩn' }}</h5>
                             </div>
                         </div>
+
                     </div>
                 @endforeach
             </div>
