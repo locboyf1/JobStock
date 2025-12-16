@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobCompanyController;
@@ -40,7 +41,11 @@ Route::middleware('auth')->prefix('company')->name('company.')->group(function (
         Route::put('/update/{id}', [JobCompanyController::class, 'update'])->name('update');
         Route::put('/status/{id}', [JobCompanyController::class, 'status'])->name('status');
     });
+});
 
+Route::prefix('companies')->name('companies.')->group(function () {
+    Route::get('/', [CompaniesController::class, 'index'])->name('index');
+    Route::get('/show/{id}', [CompaniesController::class, 'show'])->name('show');
 });
 
 Route::prefix('job')->name('job.')->group(function () {

@@ -7,7 +7,7 @@
     <!-- Title Header Start -->
     <section class="inner-header-title" style="background-image:url({{ asset('assets/img/banner-10.jpg') }});">
         <div class="container">
-            <h1>Job Detail</h1>
+            <h1>Tin tuyển dụng</h1>
         </div>
     </section>
     <div class="clearfix"></div>
@@ -20,7 +20,9 @@
             <div class="row">
 
                 <div class="detail-pic">
-                    <img src="{{ asset('storage/' . $post->company->logo) }}" class="img" alt="" />
+                    <a href="{{ route('companies.show', ['id' => $post->company->id]) }}">
+                        <img src="{{ asset('storage/' . $post->company->logo) }}" class="img" alt="" />
+                    </a>
                 </div>
 
                 <div class="detail-status">
@@ -115,6 +117,50 @@
                     </ul>
                 </div>
             @endforeach
+        </div>
+    </section>
+
+    <section style="padding: 0 !important">
+        <div class="container">
+            <div class="row">
+                <div class="main-heading">
+                    <h2><span>Những tin tuyển dụng</span> liên quan</h2>
+                </div>
+            </div>
+            <div class="row extra-mrg">
+                @foreach ($postSimilar as $post)
+                    <div class="col-md-3 col-sm-6">
+                        <div class="grid-view brows-job-list" style="height: 350px">
+                            <div class="brows-job-company-img"><img src="{{ asset('storage/' . $post->company->logo) }}"
+                                    class="img-responsive" alt="" /></div>
+                            <div class="brows-job-position">
+                                <h4><a href="{{ route('job.show', $post->id) }}">{{ $post->title }}</a></h4>
+
+                                <p><span>{{ $post->company->title }}</span></p>
+                            </div>
+                            <div class="job-position"><span class="job-num">Số lượng tuyển:
+                                    {{ $post->quantity }}</span>
+                            </div>
+                            <div class="brows-job-type"><span class="enternship">{{ $post->jobType->name }}</span>
+                            </div>
+                            <ul class="grid-view-caption" style="position: absolute; bottom: 0px">
+                                <li>
+                                    <div class="brows-job-location">
+                                        <p><i class="fa fa-map-marker"></i>
+                                            {{ functions::getProvinceName($post->company->province_id) }}</p>
+                                    </div>
+                                </li>
+                                <li>
+                                    <p><span class="brows-job-sallery"><i
+                                                class="fa fa-money"></i>{{ $post->salary_max ? $post->salary_min . ' - ' . $post->salary_max : 'Từ ' . $post->salary_min }}
+                                            Triệu</span>
+                                    </p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </section>
     <!-- Job full detail End -->

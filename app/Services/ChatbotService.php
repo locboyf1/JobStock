@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\JobPost;
 use App\Utilities\functions;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -23,21 +22,14 @@ class ChatbotService
         }
     }
 
-    public function sendMessage(string $message, array $history)
+    public function sendMessage(string $message, array $history, JobPostService $jobPostService)
     {
         $embedMessage = functions::embedByCohere($message);
-        $jobs = JobPost::whereNotNull('vector')->get();
-        $jobSearch = $jobs->map(function ($q) use ($embedMessage) {
-            $q->similarity = functions::cosineSimilarity($q->vector, $embedMessage);
-
-            return $q;
-        });
-
-        $jobSearch = $jobSearch->sortByDesc('similarity')->take(10);
+        $jobSearch = $jobPostService->getJobPostsSimilar($embedMessage);
 
         $jobContent = '';
 
-        if ($jobs->isNotEmpty()) {
+        if ($jobSearch->isNotEmpty()) {
             $jobContent = 'Dưới đây là các tin tuyển dụng lọc ra được từ hệ thống';
             foreach ($jobSearch as $job) {
                 $jobContent .= 'id: '.$job->id.', tiêu đề: '.$job->title.', công ty: '.$job->company->title.', tags: '.$job->tags->pluck('name')->implode(', ');

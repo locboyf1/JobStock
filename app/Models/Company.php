@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-
     protected $fillable = [
         'tax_code',
         'confirm_image',
@@ -28,15 +27,20 @@ class Company extends Model
         'youtube',
         'wikipedia',
         'linkedin',
-        'shop'
+        'shop',
     ];
+
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
 
+    public function jobs()
+    {
+        return $this->hasMany(JobPost::class);
+    }
 
     protected $casts = [
-        'content' => 'array'
+        'content' => 'array',
     ];
 }

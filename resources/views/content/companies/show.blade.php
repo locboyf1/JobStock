@@ -19,19 +19,6 @@
                 <div class="detail-pic">
                     <img src="{{ asset('storage/' . $company->logo) }}" class="img" alt="" />
                 </div>
-                @if ($company->is_confirmed == null)
-                    <div class="detail-status bg-info">
-                        <span>Đang chờ duyệt</span>
-                    </div>
-                @elseif ($company->is_confirmed == false)
-                    <div class="detail-status bg-danger">
-                        <span>Không được duyệt</span>
-                    </div>
-                @else
-                    <div class="detail-status bg-success">
-                        <span>Đã được duyệt</span>
-                    </div>
-                @endif
             </div>
 
             <div class="row bottom-mrg">
@@ -89,9 +76,7 @@
 
                     <div class="col-md-7 col-sm-7">
                         <div class="detail-pannel-footer-btn pull-right">
-                            {{-- <a href="#" class="footer-btn grn-btn" title="">Favourite</a> --}}
-                            <a href="{{ route('company.edit') }}" class="footer-btn blu-btn" title="">Sửa thông
-                                tin</a>
+                            <a href="#" class="footer-btn grn-btn" title="">Yêu thích</a>
                         </div>
                     </div>
 
@@ -102,6 +87,52 @@
     </section>
     <!-- Company Detail End -->
 
+    @if ($posts->isNotEmpty())
+        <section style="padding: 0 !important">
+            <div class="container">
+                <div class="row">
+                    <div class="main-heading">
+                        <h2><span>{{ $company->title }}</span> đang tuyển dụng</h2>
+                    </div>
+                </div>
+                <div class="row extra-mrg">
+                    @foreach ($posts as $post)
+                        <div class="col-md-3 col-sm-6">
+                            <div class="grid-view brows-job-list" style="height: 350px">
+                                <div class="brows-job-company-img"><img
+                                        src="{{ asset('storage/' . $post->company->logo) }}" class="img-responsive"
+                                        alt="" /></div>
+                                <div class="brows-job-position">
+                                    <h4><a href="{{ route('job.show', $post->id) }}">{{ $post->title }}</a></h4>
+
+                                    <p><span>{{ $post->company->title }}</span></p>
+                                </div>
+                                <div class="job-position"><span class="job-num">Số lượng tuyển:
+                                        {{ $post->quantity }}</span>
+                                </div>
+                                <div class="brows-job-type"><span class="enternship">{{ $post->jobType->name }}</span>
+                                </div>
+                                <ul class="grid-view-caption" style="position: absolute; bottom: 0px">
+                                    <li>
+                                        <div class="brows-job-location">
+                                            <p><i class="fa fa-map-marker"></i>
+                                                {{ functions::getProvinceName($post->company->province_id) }}</p>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <p><span class="brows-job-sallery"><i
+                                                    class="fa fa-money"></i>{{ $post->salary_max ? $post->salary_min . ' - ' . $post->salary_max : 'Từ ' . $post->salary_min }}
+                                                Triệu</span>
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
     <!-- company full detail Start -->
     <section class="full-detail-description full-detail">
         <div class="container">
