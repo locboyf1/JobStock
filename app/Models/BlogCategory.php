@@ -11,10 +11,15 @@ class BlogCategory extends Model
         'description',
         'position',
         'alias',
-        'is_show'
+        'is_show',
     ];
 
-    public function blogs(){
+    public function blogs()
+    {
         return $this->hasMany(Blog::class);
     }
+
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
 }

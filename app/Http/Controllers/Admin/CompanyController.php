@@ -58,7 +58,7 @@ class CompanyController extends Controller
             'is_confirmed' => 1,
         ]);
         Mail::html('Chúc mừng công ty '.$company->title.' của bạn đã được duyệt, hãy mau mau đăng nhập để trải nghiệm tính năng tuyển dụng tuyệt vời trên JobStock nhé.<br>Thân mến.', function ($message) use ($company) {
-            $message->to($company->email)->subject('JobStock - Xin chúc mừng');
+            $message->to($company->user->email)->subject('JobStock - Xin chúc mừng');
         });
 
         return redirect()->route('admin.company.index')->with('success', 'Đã duyệt công ty '.$company->title);
@@ -74,7 +74,7 @@ class CompanyController extends Controller
             'is_confirmed' => 0,
         ]);
         Mail::html('Chúng tôi rất tiếc vì đã phải từ chối công ty '.$company->title.', hãy thử sửa thông tin lại lần nữa nhé.<br>Xin lỗi vì sự bất tiện này.<br>Thân mến.', function ($message) use ($company) {
-            $message->to($company->email)->subject('JobStock - Mong quý khách thông cảm');
+            $message->to($company->user->email)->subject('JobStock - Mong quý khách thông cảm');
         });
 
         return redirect()->route('admin.company.index')->with('success', 'Đã từ chối công ty '.$company->title);

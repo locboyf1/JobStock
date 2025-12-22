@@ -116,9 +116,7 @@
                     @for ($i = 1; $i <= $blogs->lastPage(); $i++)
                         @if ($blogs->currentPage() == $i)
                             <li class="active"><a href="{{ $blogs->url($i) }}">{{ $i }}</a></li>
-                        @elseif($blogs->currentPage() + 1 == $i)
-                            <li><a href="{{ $blogs->url($i) }}">{{ $i }}</a></li>
-                        @elseif($blogs->currentPage() - 1 == $i)
+                        @elseif($blogs->currentPage() + 1 == $i || $blogs->currentPage() - 1 == $i)
                             <li><a href="{{ $blogs->url($i) }}">{{ $i }}</a></li>
                         @endif
                     @endfor

@@ -26,7 +26,9 @@
                 </div>
 
                 <div class="detail-status">
-                    <span>2 Days Ago</span>
+                    <form action="" class="form-inline">
+                        <button class="btn" style="border: 1px gray solid;"><i class="fa fa-heart"></i></button>
+                    </form>
                 </div>
 
             </div>
@@ -93,7 +95,7 @@
                             @if (Auth::check() && Auth::user()->role->alias == config('account.ROLE_USER'))
                                 <a href="#" class="footer-btn grn-btn" title="">Ứng tuyển</a>
                             @endif
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#signup"
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#reportModal"
                                 class="footer-btn btn-danger">Tố cáo</a>
                         </div>
                     </div>
@@ -128,31 +130,32 @@
                 </div>
             </div>
             <div class="row extra-mrg">
-                @foreach ($postSimilar as $post)
+                @foreach ($postSimilars as $postSimilar)
                     <div class="col-md-3 col-sm-6">
                         <div class="grid-view brows-job-list" style="height: 350px">
-                            <div class="brows-job-company-img"><img src="{{ asset('storage/' . $post->company->logo) }}"
-                                    class="img-responsive" alt="" /></div>
+                            <div class="brows-job-company-img"><img
+                                    src="{{ asset('storage/' . $postSimilar->company->logo) }}" class="img-responsive"
+                                    alt="" /></div>
                             <div class="brows-job-position">
-                                <h4><a href="{{ route('job.show', $post->id) }}">{{ $post->title }}</a></h4>
+                                <h4><a href="{{ route('job.show', $postSimilar->id) }}">{{ $postSimilar->title }}</a></h4>
 
-                                <p><span>{{ $post->company->title }}</span></p>
+                                <p><span>{{ $postSimilar->company->title }}</span></p>
                             </div>
                             <div class="job-position"><span class="job-num">Số lượng tuyển:
-                                    {{ $post->quantity }}</span>
+                                    {{ $postSimilar->quantity }}</span>
                             </div>
-                            <div class="brows-job-type"><span class="enternship">{{ $post->jobType->name }}</span>
+                            <div class="brows-job-type"><span class="enternship">{{ $postSimilar->jobType->name }}</span>
                             </div>
                             <ul class="grid-view-caption" style="position: absolute; bottom: 0px">
                                 <li>
                                     <div class="brows-job-location">
                                         <p><i class="fa fa-map-marker"></i>
-                                            {{ functions::getProvinceName($post->company->province_id) }}</p>
+                                            {{ functions::getProvinceName($postSimilar->company->province_id) }}</p>
                                     </div>
                                 </li>
                                 <li>
                                     <p><span class="brows-job-sallery"><i
-                                                class="fa fa-money"></i>{{ $post->salary_max ? $post->salary_min . ' - ' . $post->salary_max : 'Từ ' . $post->salary_min }}
+                                                class="fa fa-money"></i>{{ $postSimilar->salary_max ? $postSimilar->salary_min . ' - ' . $postSimilar->salary_max : 'Từ ' . $postSimilar->salary_min }}
                                             Triệu</span>
                                     </p>
                                 </li>
@@ -165,7 +168,7 @@
     </section>
     <!-- Job full detail End -->
 
-    <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
+    <div class="modal fade" id="reportModal" role="dialog" aria-labelledby="myModalLabel2" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-body">
@@ -178,8 +181,7 @@
                         <div class="tab-content" id="myModalLabel2">
                             <div role="tabpanel" class="tab-pane fade in active" id="login">
                                 <div class="subscribe wow fadeInUp">
-                                    <form action="{{ route('report', ['id' => $post->id]) }}" class="form-inline"
-                                        method="post" novalidate>
+                                    <form action="{{ route('report', ['id' => $post->id]) }}" method="post" novalidate>
                                         @csrf
                                         <div class="col-sm-12">
                                             <div class="form-group">
@@ -244,7 +246,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             @if ($errors->any())
-                $('#signup').modal('show');
+                $('#reportModal').modal('show');
             @endif
         })
     </script>

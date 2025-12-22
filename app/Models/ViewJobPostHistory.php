@@ -4,15 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PostReport extends Model
+class ViewJobPostHistory extends Model
 {
+    protected $table = 'view_job_post_histories';
+
     protected $fillable = [
         'job_post_id',
-        'name',
-        'title',
-        'email',
-        'content',
-        'is_confirmed',
+        'user_id',
     ];
 
     public function jobPost()
@@ -20,7 +18,8 @@ class PostReport extends Model
         return $this->belongsTo(JobPost::class);
     }
 
-    protected $casts = [
-        'is_confirmed' => 'boolean',
-    ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

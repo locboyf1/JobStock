@@ -156,7 +156,7 @@
 
 /* Typing Indicator */
 .chatbot-typing {
-    display: block !important;
+    display: none;
 }
 
 .chatbot-typing-bubble {

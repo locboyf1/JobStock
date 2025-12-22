@@ -20,10 +20,10 @@ class UpdateCompanyRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-
     public function rules(): array
     {
         $companyId = $this->route('id');
+
         return [
             'tax_code' => [
                 'required',
@@ -46,7 +46,7 @@ class UpdateCompanyRequest extends FormRequest
             'linkedin' => 'nullable|max:255',
             'shop' => 'nullable|max:255',
             'confirm_updated_image' => 'required|image',
-            'accept' => 'required|boolean'
+            'accept' => 'required|boolean',
         ];
     }
 
@@ -87,7 +87,7 @@ class UpdateCompanyRequest extends FormRequest
             'confirm_image.image' => 'Ảnh xác nhận không hợp lệ',
             'confirm_image.required' => 'Vui lòng chọn ảnh xác nhận',
             'accept.required' => 'Vui lòng đồng ý với điều khoản sử dụng',
-            'accept.boolean' => 'Vui lòng đồng ý với điều khoản sử dụng'
+            'accept.boolean' => 'Vui lòng đồng ý với điều khoản sử dụng',
         ];
     }
 }

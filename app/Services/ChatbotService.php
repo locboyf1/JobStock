@@ -22,10 +22,12 @@ class ChatbotService
         }
     }
 
-    public function sendMessage(string $message, array $history, JobPostService $jobPostService)
+    public function sendMessage(string $message, array $history)
     {
+        $jobPostService = app(JobPostService::class);
+
         $embedMessage = functions::embedByCohere($message);
-        $jobSearch = $jobPostService->getJobPostsSimilar($embedMessage);
+        $jobSearch = $jobPostService->getJobPostsSimilar($embedMessage, 15);
 
         $jobContent = '';
 

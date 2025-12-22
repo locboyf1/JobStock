@@ -18,7 +18,7 @@ class ChildrenMenuController extends Controller
         if (! $menu) {
             return redirect()->route('admin.menu.index')->with('error', 'Nhóm menu không tồn tại');
         }
-        $childrenMenus = $menu->childrenMenus()->get();
+        $childrenMenus = $menu->childrenMenus()->orderBy('position')->get();
 
         return view('admin.childrenmenu.index', ['menus' => $childrenMenus, 'menuGroup' => $menu]);
     }
@@ -46,7 +46,7 @@ class ChildrenMenuController extends Controller
             return redirect()->route('admin.menu.index')->with('error', 'Nhóm menu không tồn tại');
         }
         $validated = $request->validated();
-        $number = ChildrenMenu::max('position') + 1;
+        $number = ChildrenMenu::where('menu_id', $id)->max('position') + 1;
         ChildrenMenu::create([
             'title' => $validated['title'],
             'description' => $validated['description'],
@@ -62,16 +62,7 @@ class ChildrenMenuController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        $menu = Menu::find($id);
-        if (! $menu) {
-            return redirect()->route('admin.menu.index')->with('error', 'Nhóm menu không tồn tại');
-        }
-        $childrenMenus = $menu->childrenMenus()->get();
-
-        return view('admin.childrenmenu.index', ['menus' => $childrenMenus, 'menuGroup' => $menu]);
-    }
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -105,6 +96,63 @@ class ChildrenMenuController extends Controller
         ]);
 
         return redirect()->route('admin.childrenmenu.index', ['id' => $childrenMenus->menu_id])->with('success', 'Cập nhật menu con thành công');
+    }
+
+    public function status(string $is)
+    {
+        $menu = ChildrenMenu::find($is);
+        if (! $menu) {
+            return redirect()->route('admin.childrenmenu.index')->with('error', 'Menu con không tồn tại');
+        }
+        $menu->update([
+            'is_show' => ! $menu->is_show,
+        ]);
+
+        return redirect()->route('admin.childrenmenu.index', ['id' => $menu->menu_id])->with('success', 'Cập nhật menu con thành công');
+    }
+
+    public function up(string $id)
+    {
+        $upMenu = ChildrenMenu::find($id);
+        if (! $upMenu) {
+            return redirect()->route('admin.menu.index')->with('error', 'Menu không tồn tại');
+        }
+
+        if ($upMenu->position != 1) {
+            $downMenu = ChildrenMenu::where('position', $upMenu->position - 1)->first();
+
+            $upMenu->update([
+                'position' => $downMenu->position,
+            ]);
+
+            $downMenu->update([
+                'position' => $downMenu->position + 1,
+            ]);
+        }
+
+        return redirect()->route('admin.childrenmenu.index', ['id' => $upMenu->menu_id])->with('success', 'Thay đổi vị trí menu thành công');
+    }
+
+    public function down(string $id)
+    {
+        $downMenu = ChildrenMenu::find($id);
+        if (! $downMenu) {
+            return redirect()->route('admin.menu.index')->with('error', 'Menu không tồn tại');
+        }
+
+        if ($downMenu->position != ChildrenMenu::where('menu_id', $downMenu->menu_id)->max('position')) {
+            $upMenu = ChildrenMenu::where('position', $downMenu->position + 1)->first();
+
+            $downMenu->update([
+                'position' => $upMenu->position,
+            ]);
+
+            $upMenu->update([
+                'position' => $upMenu->position - 1,
+            ]);
+        }
+
+        return redirect()->route('admin.childrenmenu.index', ['id' => $downMenu->menu_id])->with('success', 'Thay đổi vị trí menu thành công');
     }
 
     /**

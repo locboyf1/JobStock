@@ -13,7 +13,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::whereHas('role', function ($q) {
+            $q->whereNot('alias', config('account.ROLE_ADMIN'));
+        })->paginate(4);
 
         return view('admin.user.index', ['users' => $users]);
     }
@@ -61,12 +63,15 @@ class UserController extends Controller
     public function status(string $id)
     {
         $user = User::findOrFail($id);
+        if (! $user) {
+            return redirect()->route('admin.user.index')->with('error', 'Không tìm thấy người dùng');
+        }
         $status = $user->is_active;
         $user->update([
             'is_active' => ! $status,
         ]);
 
-        return redirect()->route('admin.user.index');
+        return redirect()->route('admin.user.index')->with('success', 'Đã thay đổi trạng thái người dùng');
     }
 
     /**

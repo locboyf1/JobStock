@@ -78,7 +78,7 @@
                             </div>
                             <div class="job-position"><span class="job-num">Số lượng tuyển: {{ $post->quantity }}</span>
                             </div>
-                            <div class="brows-job-type"><span class="enternship">{{ $post->jobType->name }}</span></div>
+                            <div class="brows-job-type"><span class="full-time">{{ $post->jobType->name }}</span></div>
                             <ul class="grid-view-caption" style="position: absolute; bottom: 0px">
                                 <li>
                                     <div class="brows-job-location">

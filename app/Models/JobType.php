@@ -19,4 +19,8 @@ class JobType extends Model
     {
         return $this->hasMany(JobPost::class);
     }
+
+    protected $casts = [
+        'is_active' => 'boolean',
+    ];
 }

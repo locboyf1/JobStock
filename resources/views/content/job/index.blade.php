@@ -6,7 +6,7 @@
     <!-- Title Header Start -->
     <section class="inner-header-title" style="background-image:url(assets/img/banner-10.jpg);">
         <div class="container">
-            <h1>Browse Jobs</h1>
+            <h1>Tìm việc</h1>
         </div>
     </section>
     <div class="clearfix"></div>
@@ -107,13 +107,19 @@
 
             <div class="row">
                 <ul class="pagination">
-                    <li><a href="#">&laquo;</a></li>
-                    <li class="active"><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#"><i class="fa fa-ellipsis-h"></i></a></li>
-                    <li><a href="#">&raquo;</a></li>
+                    @if ($posts->currentPage() > 1)
+                        <li><a href="{{ $posts->url(1) }}">&laquo;</a></li>
+                    @endif
+                    @for ($i = 1; $i <= $posts->lastPage(); $i++)
+                        @if ($posts->currentPage() == $i)
+                            <li class="active"><a href="{{ $posts->url($i) }}">{{ $i }}</a></li>
+                        @elseif($posts->currentPage() + 1 == $i || $posts->currentPage() - 1 == $i)
+                            <li><a href="{{ $posts->url($i) }}">{{ $i }}</a></li>
+                        @endif
+                    @endfor
+                    @if ($posts->currentPage() < $posts->lastPage())
+                        <li><a href="{{ $posts->url($posts->lastPage()) }}">&raquo;</a></li>
+                    @endif
                 </ul>
             </div>
 

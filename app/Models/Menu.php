@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\ChildrenMenu;
 use Illuminate\Database\Eloquent\Model;
 
 class Menu extends Model
@@ -12,11 +11,15 @@ class Menu extends Model
         'description',
         'url',
         'position',
-        'is_show'
+        'is_show',
     ];
 
     public function childrenMenus()
     {
         return $this->hasMany(ChildrenMenu::class, 'menu_id');
     }
+
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
 }

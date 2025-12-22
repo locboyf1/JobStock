@@ -58,6 +58,9 @@ class JobTypeController extends Controller
     public function edit(string $id)
     {
         $jobType = JobType::find($id);
+        if (! $jobType) {
+            return redirect()->route('admin.jobtype.index')->with('error', 'Không tìm thấy loại công việc');
+        }
 
         return view('admin.jobtype.edit', ['jobType' => $jobType]);
     }
@@ -69,13 +72,16 @@ class JobTypeController extends Controller
     {
         $validated = $request->validated();
         $jobType = JobType::find($id);
+        if (! $jobType) {
+            return redirect()->route('admin.jobtype.index')->with('error', 'Không tìm thấy loại công việc');
+        }
         $jobType->update([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'is_active' => $request->input('is_active') ? 1 : 0,
         ]);
 
-        return redirect()->route('admin.jobtype.index');
+        return redirect()->route('admin.jobtype.index')->with('success', 'Cập nhật loại công việc thành công');
     }
 
     /**
@@ -90,7 +96,7 @@ class JobTypeController extends Controller
     {
         $upJobType = JobType::find($id);
         if (! $upJobType) {
-            return abort(404);
+            return redirect()->route('admin.jobtype.index')->with('error', 'Không tìm thấy loại công việc');
         }
 
         if ($upJobType->position != 1) {
@@ -105,14 +111,14 @@ class JobTypeController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.jobtype.index');
+        return redirect()->route('admin.jobtype.index')->with('success', 'Đã chuyển loại công việc lên');
     }
 
     public function down(string $id)
     {
         $downJobType = JobType::find($id);
         if (! $downJobType) {
-            return abort(404);
+            return redirect()->route('admin.jobtype.index')->with('error', 'Không tìm thấy loại công việc');
         }
 
         if ($downJobType->position != JobType::max('position')) {
@@ -127,20 +133,20 @@ class JobTypeController extends Controller
             ]);
         }
 
-        return redirect()->route('admin.jobtype.index');
+        return redirect()->route('admin.jobtype.index')->with('success', 'Đã chuyển loại công việc xuống');
     }
 
     public function status(string $id)
     {
         $jobType = JobType::find($id);
         if (! $jobType) {
-            return abort(404);
+            return redirect()->route('admin.jobtype.index')->with('error', 'Không tìm thấy loại công việc');
         }
 
         $jobType->update([
             'is_active' => ! $jobType->is_active,
         ]);
 
-        return redirect()->route('admin.jobtype.index');
+        return redirect()->route('admin.jobtype.index')->with('success', 'Đã thay đổi trạng thái loại công việc');
     }
 }

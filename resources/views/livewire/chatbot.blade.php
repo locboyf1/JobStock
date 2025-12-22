@@ -1,5 +1,5 @@
 <div>
-    <link rel="stylesheet" href="{{ asset('assets/css/chatbot.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/chatbot.css') }}?v=1.2">
     <div class="chatbot-wrapper">
         @if ($isOpen)
             <div class="chatbot-window">
@@ -69,18 +69,16 @@
                             </div>
                         </div>
                     @endforeach
-                    @if ($isCallingApi)
-                        <div wire:loading wire:target="sendMessage" class="chatbot-typing">
-                            <div class="chatbot-typing-bubble">
-                                <div class="chatbot-dots">
-                                    <span class="chatbot-dot"></span>
-                                    <span class="chatbot-dot"></span>
-                                    <span class="chatbot-dot"></span>
-                                </div>
-                                <span class="chatbot-typing-text">Đang trả lời...</span>
+                    <div wire:loading.flex wire:target="sendMessage" class="chatbot-typing">
+                        <div class="chatbot-typing-bubble">
+                            <div class="chatbot-dots">
+                                <span class="chatbot-dot"></span>
+                                <span class="chatbot-dot"></span>
+                                <span class="chatbot-dot"></span>
                             </div>
+                            <span class="chatbot-typing-text">Đang trả lời...</span>
                         </div>
-                    @endif
+                    </div>
                 </div>
 
                 <!-- Footer -->

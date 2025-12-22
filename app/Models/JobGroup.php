@@ -17,4 +17,8 @@ class JobGroup extends Model
     {
         return $this->hasMany(JobCompany::class);
     }
+
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
 }

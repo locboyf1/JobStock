@@ -62,7 +62,30 @@
                     </table>
                 </div>
             </div>
-
+            <div class="card">
+                <div class="card-body d-flex justify-content-center">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            @if ($users->currentPage() > 1)
+                                <li class="page-item"><a class="page-link" href="{{ $users->url(1) }}">Trang đầu</a></li>
+                            @endif
+                            @for ($i = 1; $i <= $users->lastPage(); $i++)
+                                @if ($users->currentPage() == $i)
+                                    <li class="page-item active"><a class="page-link"
+                                            href="{{ $users->url($i) }}">{{ $i }}</a></li>
+                                @elseif ($users->currentPage() == $i + 1 || $users->currentPage() == $i - 1)
+                                    <li class="page-item"><a class="page-link"
+                                            href="{{ $users->url($i) }}">{{ $i }}</a></li>
+                                @endif
+                            @endfor
+                            @if ($users->currentPage() < $users->lastPage())
+                                <li class="page-item"><a class="page-link"
+                                        href="{{ $users->url($users->lastPage()) }}">Trang cuối</a></li>
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
     </section>
 @endsection

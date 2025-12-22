@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Menu;
 
 class ChildrenMenu extends Model
 {
@@ -13,12 +12,15 @@ class ChildrenMenu extends Model
         'url',
         'position',
         'is_show',
-        'menu_id'
+        'menu_id',
     ];
 
     public function menu()
     {
         return $this->belongsTo(Menu::class, 'menu_id');
     }
-}
 
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
+}

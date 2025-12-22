@@ -30,6 +30,15 @@ class Company extends Model
         'shop',
     ];
 
+    public function getIsConfirmedAttribute($value)
+    {
+        if ($value === null) {
+            return null;
+        }
+
+        return $value && $this->user->is_active;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
@@ -42,5 +51,7 @@ class Company extends Model
 
     protected $casts = [
         'content' => 'array',
+        'is_confirmed' => 'boolean',
+        'is_show' => 'boolean',
     ];
 }

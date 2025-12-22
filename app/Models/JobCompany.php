@@ -17,4 +17,8 @@ class JobCompany extends Model
     {
         return $this->belongsTo(JobGroup::class);
     }
+
+    protected $casts = [
+        'is_show' => 'boolean',
+    ];
 }

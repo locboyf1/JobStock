@@ -23,6 +23,7 @@ class JobPost extends Model
         'experience',
         'quantity',
         'vector',
+        'reason',
     ];
 
     public function jobType()
@@ -52,12 +53,12 @@ class JobPost extends Model
 
     public function getIsShowAttribute()
     {
-        return $this->is_active && $this->company->is_confirmed;
+        return $this->is_active && $this->is_confirmed && $this->company->is_confirmed;
     }
 
     public function scopeIsShow($query)
     {
-        return $query->where('is_active', 1)->whereHas('company', function ($q) {
+        return $query->where('is_active', 1)->where('is_confirmed', 1)->whereHas('company', function ($q) {
             $q->where('is_confirmed', 1);
         });
     }
@@ -67,5 +68,7 @@ class JobPost extends Model
         'created_at' => 'datetime',
         'expired_time' => 'datetime',
         'vector' => 'array',
+        'is_active' => 'boolean',
+        'is_confirmed' => 'boolean',
     ];
 }

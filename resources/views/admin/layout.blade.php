@@ -239,6 +239,8 @@
                                     data-feather="globe"></i><span>Quản lý công ty</span></a>
                             <ul class="dropdown-menu">
                                 <li><a class="nav-link" href="{{ route('admin.company.index') }}">Chờ duyệt</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.jobpost.index') }}">Bài tuyển dụng</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="dropdown">
@@ -248,6 +250,16 @@
                         <li class="dropdown">
                             <a href="{{ route('admin.chatbotsetting.index') }}" class="nav-link"><i
                                     data-feather="message-circle"></i><span>Trợ lý chatbot</span></a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#" class="menu-toggle nav-link has-dropdown"><i
+                                    data-feather="file-text"></i><span>Quản lý tố cáo</span></a>
+                            <ul class="dropdown-menu">
+                                <li><a class="nav-link" href="{{ route('admin.jobpostreport.index') }}">Tố cáo chờ
+                                        duyệt</a></li>
+                                <li><a class="nav-link" href="{{ route('admin.jobpostreport.index') }}">Lịch sử tố
+                                        cáo</a></li>
+                            </ul>
                         </li>
                     </ul>
                 </aside>

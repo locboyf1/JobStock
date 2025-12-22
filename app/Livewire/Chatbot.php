@@ -13,8 +13,6 @@ class Chatbot extends Component
 
     public $history = [];
 
-    public $isCallingApi = false;
-
     public function __construct()
     {
         $this->history = session()->get('history', []);
@@ -38,9 +36,10 @@ class Chatbot extends Component
             'content' => $this->message,
         ];
 
-        $this->isCallingApi = true;
-        $response = $chatbotService->sendMessage($this->message[0], $history);
-        $this->isCallingApi = false;
+        $mess = $this->message;
+        $this->message = '';
+
+        $response = $chatbotService->sendMessage($mess[0], $history);
 
         $history[] = [
             'role' => 'assistant',
@@ -48,7 +47,6 @@ class Chatbot extends Component
         ];
         session()->put('history', $history);
         $this->history = $history;
-        $this->message = '';
     }
 
     public function chatWindow()

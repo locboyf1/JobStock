@@ -146,11 +146,6 @@
                     </div>
                 </div>
             </div>
-            <div class="row copyright">
-                <div class="container">
-                    <p><a target="_blank" href="https://www.templateshub.net">Templates Hub</a></p>
-                </div>
-            </div>
         </footer>
         <div class="clearfix"></div>
         <div class="modal fade" id="signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2"
@@ -220,6 +215,14 @@
                 </div>
             </div>
         </div>
+        @can('admin')
+            <button onclick="window.location.href='/admin'" class="w3-button w3-teal w3-xlarge w3-right"><i
+                    class="spin fa fa-cog" aria-hidden="true"></i></button>
+        @endcan
+        @cannot('admin')
+            @livewire('chatbot')
+            @livewireScripts
+        @endcannot
         <script type="text/javascript" src="{{ asset('assets/plugins/js/jquery.min.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/viewportchecker.js') }}"></script>
         <script type="text/javascript" src="{{ asset('assets/plugins/js/bootstrap.min.js') }}"></script>
@@ -239,8 +242,7 @@
         <script src="{{ asset('assets/bundles/izitoast/js/iziToast.min.js') }}"></script>
         <script src="{{ asset('assets/bundles/summernote/summernote-bs4.js') }}"></script>
 
-        @livewire('chatbot')
-        @livewireScripts
+
 
         <script>
             @if (session()->has('success'))

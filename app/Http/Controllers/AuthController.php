@@ -28,6 +28,13 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
 
+            $user = User::where('email', $request->email)->first();
+            if ($user->is_active != 1) {
+                Auth::logout();
+
+                return redirect()->route('login')->with('error', 'Tài khoản của bạn đã bị khóa');
+            }
+
             $request->session()->regenerate();
 
             return redirect()->route('home')->with('success', 'Đăng nhập thành công');

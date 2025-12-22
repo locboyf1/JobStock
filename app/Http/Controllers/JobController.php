@@ -6,9 +6,12 @@ use App\Models\JobCompany;
 use App\Models\JobGroup;
 use App\Models\JobPost;
 use App\Models\JobType;
+use App\Models\ViewJobPostHistory;
 use App\Services\JobPostService;
 use App\Utilities\functions;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class JobController extends Controller
@@ -59,7 +62,7 @@ class JobController extends Controller
             $posts->where('job_type_id', $job_type_id);
         }
 
-        $posts = $posts->orderBy('created_at', 'desc')->paginate(9)->withQueryString();
+        $posts = $posts->orderBy('created_at', 'desc')->paginate(6)->withQueryString();
 
         $provinces = functions::getListProvince();
         $job_groups = JobGroup::where('is_show', 1)->orderBy('position', 'asc')->get();
@@ -71,13 +74,31 @@ class JobController extends Controller
 
     public function show(string $id, JobPostService $jobPostService)
     {
-        $post = JobPost::findOrFail($id);
-        if ($post->is_active == 0 || $post == null) {
-            return redirect()->back()->with('error', 'Tin tuyển dụng không tồn tại hoặc đã bị ẩn');
+        $post = JobPost::find($id);
+        if (! $post->is_show || $post == null) {
+            return redirect()->route('job.index')->with('error', 'Tin tuyển dụng không tồn tại hoặc đã bị ẩn');
         }
 
-        $postSimilar = $jobPostService->getJobPostsSimilar($post->vector, 4, $post->id);
+        if (Auth::check()) {
+            $user = Auth::user();
+            ViewJobPostHistory::create([
+                'user_id' => $user->id,
+                'job_post_id' => $post->id,
+            ]);
+        } else {
 
-        return view('content.job.show', ['post' => $post, 'postSimilar' => $postSimilar]);
+            $vector = Cache::get('job_post_vector'.session()->getId());
+            if ($vector !== null) {
+                for ($i = 0; $i < count($post->vector); $i++) {
+                    $vector[$i] = 0.8 * $vector[$i] + 0.2 * $post->vector[$i];
+                }
+                Cache::put('job_post_vector'.session()->getId(), $vector, now()->addDays(7));
+            } else {
+                Cache::put('job_post_vector'.session()->getId(), $post->vector, now()->addDays(7));
+            }
+        }
+        $postSimilars = $jobPostService->getJobPostsSimilar($post->vector, 4, $post->id);
+
+        return view('content.job.show', ['post' => $post, 'postSimilars' => $postSimilars]);
     }
 }

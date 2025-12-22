@@ -20,6 +20,7 @@ return new class extends Migration
             $table->date('expired_time')->nullable();
             $table->boolean('is_active');
             $table->boolean('is_confirmed')->nullable();
+            $table->string('reason', 1000)->nullable();
             $table->integer('quantity');
             $table->string('description', 5000);
             $table->integer('experience');

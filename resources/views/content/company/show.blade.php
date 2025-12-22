@@ -19,11 +19,11 @@
                 <div class="detail-pic">
                     <img src="{{ asset('storage/' . $company->logo) }}" class="img" alt="" />
                 </div>
-                @if ($company->is_confirmed == null)
+                @if ($company->is_confirmed === null)
                     <div class="detail-status bg-info">
                         <span>Đang chờ duyệt</span>
                     </div>
-                @elseif ($company->is_confirmed == false)
+                @elseif ($company->is_confirmed === 0)
                     <div class="detail-status bg-danger">
                         <span>Không được duyệt</span>
                     </div>

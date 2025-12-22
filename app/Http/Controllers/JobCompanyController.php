@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\JobRequest;
+use App\Jobs\CensorContentJobPost;
+use App\Jobs\EmbeddingJobPost;
 use App\Models\JobCompany;
 use App\Models\JobGroup;
 use App\Models\JobPost;
@@ -63,7 +65,7 @@ class JobCompanyController extends Controller
             'content' => $validated['content'],
             'expired_time' => Carbon::createFromFormat('m/d/Y', $validated['expired_time'])->format('Y-m-d'),
             'company_id' => $company->id,
-            'is_active' => $company->is_confirmed ? true : false,
+            'is_active' => true,
         ]);
 
         if ($request->filled('tags')) {
@@ -84,6 +86,9 @@ class JobCompanyController extends Controller
 
             $post->tags()->sync($tagsId);
         }
+
+        CensorContentJobPost::dispatch($post->id);
+        EmbeddingJobPost::dispatch($post->id);
 
         return redirect()->route('company.job.index')->with('success', 'Tin tuyển dụng đã được tạo thành công.');
     }
@@ -152,7 +157,6 @@ class JobCompanyController extends Controller
             'content' => $validated['content'],
             'expired_time' => Carbon::createFromFormat('m/d/Y', $validated['expired_time'])->format('Y-m-d'),
             'company_id' => $company->id,
-            'is_active' => $company->is_confirmed ? true : false,
         ]);
 
         if ($request->filled('tags')) {
@@ -173,6 +177,9 @@ class JobCompanyController extends Controller
 
             $post->tags()->sync($tagsId);
         }
+
+        CensorContentJobPost::dispatch($post->id);
+        EmbeddingJobPost::dispatch($post->id);
 
         return redirect()->route('company.job.index')->with('success', 'Tin tuyển dụng đã được cập nhật thành công.');
     }

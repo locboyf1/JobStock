@@ -8,8 +8,10 @@ use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JobGroupController;
+use App\Http\Controllers\Admin\JobPostController;
 use App\Http\Controllers\Admin\JobTypeController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\PostReportController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Middleware\CheckAdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -109,5 +111,19 @@ Route::middleware(CheckAdminMiddleware::class)->prefix('admin')->name('admin.')-
     Route::prefix('chatbotsetting')->name('chatbotsetting.')->group(function () {
         Route::get('/', [ChatBotSettingController::class, 'index'])->name('index');
         Route::put('/update', [ChatBotSettingController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('job-post-report')->name('jobpostreport.')->group(function () {
+        Route::get('/', [PostReportController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [PostReportController::class, 'show'])->name('show');
+        Route::put('/approve/{id}', [PostReportController::class, 'approve'])->name('approve');
+        Route::put('/unapprove/{id}', [PostReportController::class, 'unapprove'])->name('unapprove');
+    });
+
+    Route::prefix('job-post')->name('jobpost.')->group(function () {
+        Route::get('/', [JobPostController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [JobPostController::class, 'show'])->name('show');
+        Route::put('/approve/{id}', [JobPostController::class, 'approve'])->name('approve');
+        Route::put('/unapprove/{id}', [JobPostController::class, 'unapprove'])->name('unapprove');
     });
 });
