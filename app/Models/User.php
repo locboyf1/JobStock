@@ -61,6 +61,16 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
 
+    public function jobSaves()
+    {
+        return $this->hasMany(JobSave::class, 'user_id', 'id');
+    }
+
+    public function companyFavorites()
+    {
+        return $this->hasMany(CompanyFavorite::class, 'user_id', 'id');
+    }
+
     public function getAvatarPathAttribute()
     {
         if ($this->avatar == null) {

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Utilities\functions;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -54,4 +55,14 @@ class Company extends Model
         'is_confirmed' => 'boolean',
         'is_show' => 'boolean',
     ];
+
+    public function favorites()
+    {
+        return $this->hasMany(CompanyFavorite::class);
+    }
+
+    public function getProvinceNameAttribute()
+    {
+        return functions::getProvinceName($this->province_id);
+    }
 }

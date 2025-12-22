@@ -26,11 +26,14 @@
                             alt=""></a></div>
                 <div class="collapse navbar-collapse" id="navbar-menu">
                     <ul class="nav navbar-nav navbar-right" data-in="fadeInDown" data-out="fadeOutUp">
-                        <li><a href="{{ route('company.job.index') }}"><i class="fa fa-pencil"
-                                    aria-hidden="true"></i>Bài tuyển</a></li>
-                        <li><a href="{{ route('company.index') }}"><i class="fa fa-building" aria-hidden="true"></i>Công
-                                ty</a>
-                        </li>
+                        @can('company')
+                            <li><a href="{{ route('company.job.index') }}"><i class="fa fa-pencil"
+                                        aria-hidden="true"></i>Bài tuyển</a></li>
+                        @endcan
+                        @cannot('admin')
+                            <li><a href="{{ route('company.index') }}"><i class="fa fa-building" aria-hidden="true"></i>Công
+                                    ty</a></li>
+                        @endcannot
                         <li class="left-br">
                             @auth
                                 <form action="{{ route('logout') }}" method="post">

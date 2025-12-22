@@ -4,10 +4,13 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CompaniesController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyFavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JobCompanyController;
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\JobPostSavedController;
 use App\Http\Controllers\PostReportController;
+use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\AuthPageMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -46,11 +49,13 @@ Route::middleware('auth')->prefix('company')->name('company.')->group(function (
 Route::prefix('companies')->name('companies.')->group(function () {
     Route::get('/', [CompaniesController::class, 'index'])->name('index');
     Route::get('/show/{id}', [CompaniesController::class, 'show'])->name('show');
+    Route::post('/favorite/{id}', [CompaniesController::class, 'favorite'])->middleware(AuthMiddleware::class)->name('favorite');
 });
 
 Route::prefix('job')->name('job.')->group(function () {
     Route::get('/', [JobController::class, 'index'])->name('index');
     Route::get('/show/{id}', [JobController::class, 'show'])->name('show');
+    Route::post('/save/{id}', [JobController::class, 'save'])->middleware(AuthMiddleware::class)->name('save');
 });
 
 Route::post('/report/{id}', [PostReportController::class, 'store'])->name('report');
@@ -58,4 +63,14 @@ Route::post('/report/{id}', [PostReportController::class, 'store'])->name('repor
 Route::prefix('blog')->name('blog.')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('index');
     Route::get('/show/{id}/{alias}', [BlogController::class, 'show'])->name('show');
+});
+
+Route::prefix('job-post-saved')->middleware(AuthMiddleware::class)->name('jobpostsaved.')->group(function () {
+    Route::get('/', [JobPostSavedController::class, 'index'])->name('index');
+    Route::delete('/unsave/{id}', [JobPostSavedController::class, 'destroy'])->name('destroy');
+});
+
+Route::prefix('company-favorite')->middleware(AuthMiddleware::class)->name('companyfavorite.')->group(function () {
+    Route::get('/', [CompanyFavoriteController::class, 'index'])->name('index');
+    Route::delete('/unfavorite/{id}', [CompanyFavoriteController::class, 'destroy'])->name('destroy');
 });

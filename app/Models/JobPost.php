@@ -53,14 +53,19 @@ class JobPost extends Model
 
     public function getIsShowAttribute()
     {
-        return $this->is_active && $this->is_confirmed && $this->company->is_confirmed;
+        return $this->is_active && $this->is_confirmed && optional($this->company)->is_confirmed;
     }
 
     public function scopeIsShow($query)
     {
-        return $query->where('is_active', 1)->where('is_confirmed', 1)->whereHas('company', function ($q) {
-            $q->where('is_confirmed', 1);
-        });
+        return $query->where('is_active', true)
+            ->where('is_confirmed', true)
+            ->whereHas('company', function ($q) {
+                $q->where('is_confirmed', true)
+                    ->whereHas('user', function ($u) {
+                        $u->where('is_active', true);
+                    });
+            });
     }
 
     protected $casts = [

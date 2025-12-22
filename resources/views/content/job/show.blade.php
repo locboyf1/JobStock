@@ -24,13 +24,15 @@
                         <img src="{{ asset('storage/' . $post->company->logo) }}" class="img" alt="" />
                     </a>
                 </div>
-
-                <div class="detail-status">
-                    <form action="" class="form-inline">
-                        <button class="btn" style="border: 1px gray solid;"><i class="fa fa-heart"></i></button>
-                    </form>
-                </div>
-
+                @if (Auth::check())
+                    <div class="detail-status">
+                        <form action="{{ route('job.save', ['id' => $post->id]) }}" method="POST" class="form-inline">
+                            @csrf
+                            <button class="btn" style="border: 1px gray solid;"><i
+                                    class="fa fa-bookmark {{ $saved ? 'text-danger' : '' }}"></i></button>
+                        </form>
+                    </div>
+                @endif
             </div>
 
             <div class="row bottom-mrg">

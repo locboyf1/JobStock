@@ -19,6 +19,15 @@
                 <div class="detail-pic">
                     <img src="{{ asset('storage/' . $company->logo) }}" class="img" alt="" />
                 </div>
+                @if (Auth::check())
+                    <div class="detail-status">
+                        <form action="{{ route('companies.favorite', $company->id) }}" method="POST" class="form-inline">
+                            @csrf
+                            <button class="btn" style="border: 1px gray solid;"><i
+                                    class="fa fa-heart {{ $favorite ? 'text-danger' : '' }}"></i></button>
+                        </form>
+                    </div>
+                @endif
             </div>
 
             <div class="row bottom-mrg">
@@ -73,16 +82,8 @@
                             @endif
                         </ul>
                     </div>
-
-                    <div class="col-md-7 col-sm-7">
-                        <div class="detail-pannel-footer-btn pull-right">
-                            <a href="#" class="footer-btn grn-btn" title="">Yêu thích</a>
-                        </div>
-                    </div>
-
                 </div>
             </div>
-
         </div>
     </section>
     <!-- Company Detail End -->

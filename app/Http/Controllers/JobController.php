@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\JobCompany;
 use App\Models\JobGroup;
 use App\Models\JobPost;
+use App\Models\JobSave;
 use App\Models\JobType;
 use App\Models\ViewJobPostHistory;
 use App\Services\JobPostService;
@@ -74,13 +75,13 @@ class JobController extends Controller
 
     public function show(string $id, JobPostService $jobPostService)
     {
+        $user = Auth::check() ? Auth::user() : null;
         $post = JobPost::find($id);
-        if (! $post->is_show || $post == null) {
+        if ($post === null || ! $post->is_show) {
             return redirect()->route('job.index')->with('error', 'Tin tuyển dụng không tồn tại hoặc đã bị ẩn');
         }
 
-        if (Auth::check()) {
-            $user = Auth::user();
+        if ($user) {
             ViewJobPostHistory::create([
                 'user_id' => $user->id,
                 'job_post_id' => $post->id,
@@ -99,6 +100,39 @@ class JobController extends Controller
         }
         $postSimilars = $jobPostService->getJobPostsSimilar($post->vector, 4, $post->id);
 
-        return view('content.job.show', ['post' => $post, 'postSimilars' => $postSimilars]);
+        $saved = false;
+        if ($user) {
+            $saved = JobSave::where('user_id', $user->id)->where('job_post_id', $post->id)->first();
+            if ($saved) {
+                $saved = true;
+            }
+        }
+
+        return view('content.job.show', ['post' => $post, 'postSimilars' => $postSimilars, 'saved' => $saved]);
+    }
+
+    public function save(string $id)
+    {
+        $user = Auth::user();
+        if (! $user) {
+            return redirect()->route('login')->with('error', 'Bạn cần đăng nhập để lưu tin tuyển dụng');
+        }
+        $post = JobPost::find($id);
+        if (! $post->is_show || $post == null) {
+            return redirect()->route('job.index')->with('error', 'Tin tuyển dụng không tồn tại hoặc đã bị ẩn');
+        }
+        $saved = JobSave::where('user_id', $user->id)->where('job_post_id', $post->id)->first();
+        if ($saved) {
+            $saved->delete();
+
+            return redirect()->back()->with('success', 'Đã xóa tin tuyển dụng khỏi danh sách lưu');
+        } else {
+            JobSave::create([
+                'user_id' => $user->id,
+                'job_post_id' => $post->id,
+            ]);
+
+            return redirect()->back()->with('success', 'Đã thêm tin tuyển dụng vào danh sách lưu');
+        }
     }
 }
