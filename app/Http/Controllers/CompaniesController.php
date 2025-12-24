@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\CompanyFavorite;
-use App\Utilities\functions;
 use Illuminate\Support\Facades\Auth;
 
 class CompaniesController extends Controller
@@ -22,8 +21,6 @@ class CompaniesController extends Controller
             return redirect()->route('companies.index')->with('error', 'Công ty không tồn tại');
         }
 
-        $provinceName = functions::getProvinceName($company->province_id);
-
         $posts = $company->jobs()->isShow()->where('expired_time', '>', now())->orderBy('created_at', 'desc')->get();
 
         $favorite = false;
@@ -34,7 +31,7 @@ class CompaniesController extends Controller
             }
         }
 
-        return view('content.companies.show', ['company' => $company, 'provinceName' => $provinceName, 'posts' => $posts, 'favorite' => $favorite]);
+        return view('content.companies.show', ['company' => $company, 'posts' => $posts, 'favorite' => $favorite]);
     }
 
     public function favorite(string $id)

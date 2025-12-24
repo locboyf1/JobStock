@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,7 +24,7 @@ class MenuRequest extends FormRequest
         return [
             'title' => 'required|string|max:50',
             'description' => 'nullable|string|max:255',
-            'url' => 'required|string|max:255'
+            'url' => 'required|string|max:255',
         ];
     }
 
@@ -38,7 +38,7 @@ class MenuRequest extends FormRequest
             'description.max' => 'Mô tả menu không được quá dài.',
             'url.required' => 'URL menu không được để trống.',
             'url.string' => 'URL menu phải là một chuỗi ký tự.',
-            'url.max' => 'URL menu không được quá dài.'
+            'url.max' => 'URL menu không được quá dài.',
         ];
     }
 }

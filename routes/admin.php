@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BlogController;
 use App\Http\Controllers\Admin\ChatBotSettingController;
 use App\Http\Controllers\Admin\ChildrenMenuController;
 use App\Http\Controllers\Admin\CompanyController;
+use App\Http\Controllers\Admin\ContactController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\JobController;
 use App\Http\Controllers\Admin\JobGroupController;
@@ -125,5 +126,11 @@ Route::middleware(CheckAdminMiddleware::class)->prefix('admin')->name('admin.')-
         Route::get('/show/{id}', [JobPostController::class, 'show'])->name('show');
         Route::put('/approve/{id}', [JobPostController::class, 'approve'])->name('approve');
         Route::put('/unapprove/{id}', [JobPostController::class, 'unapprove'])->name('unapprove');
+    });
+
+    Route::prefix('contact')->name('contact.')->group(function () {
+        Route::get('/', [ContactController::class, 'index'])->name('index');
+        Route::get('/show/{id}', [ContactController::class, 'show'])->name('show');
+        Route::put('/status/{id}', [ContactController::class, 'status'])->name('status');
     });
 });

@@ -73,7 +73,7 @@ class CompanyController extends Controller
         $company->update([
             'is_confirmed' => 0,
         ]);
-        Mail::html('Chúng tôi rất tiếc vì đã phải từ chối công ty '.$company->title.', hãy thử sửa thông tin lại lần nữa nhé.<br>Xin lỗi vì sự bất tiện này.<br>Thân mến.', function ($message) use ($company) {
+        Mail::html('Chúng tôi rất tiếc vì đã phải từ chối công ty '.$company->title.'<br>Hãy thử sửa thông tin lại lần nữa nhé.<br>Xin lỗi vì sự bất tiện này.<br>Thân mến.', function ($message) use ($company) {
             $message->to($company->user->email)->subject('JobStock - Mong quý khách thông cảm');
         });
 

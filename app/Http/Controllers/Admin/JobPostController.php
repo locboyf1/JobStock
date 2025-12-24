@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ReasonRejectJobPostRequest;
+use App\Http\Requests\Admin\ReasonRejectJobPostRequest;
 use App\Models\JobPost;
 use Illuminate\Http\Request;
 

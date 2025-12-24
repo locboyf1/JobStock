@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\MenuRequest;
+use App\Http\Requests\Admin\MenuRequest;
 use App\Models\Menu;
 
 class MenuController extends Controller

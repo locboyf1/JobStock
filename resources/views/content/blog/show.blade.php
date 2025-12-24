@@ -58,86 +58,51 @@
                     <div class="row no-mrg">
                         <div class="comments">
                             <div class="section-title2">
-                                <h3>Comments (2)</h3>
+                                <h3>{{ $blog->comments->count() }} bình luận</h3>
                             </div>
 
-                            <div class="single-comment">
-                                <div class="img-holder">
-                                    <img src="assets/img/blog/1.jpg" class="img-responsive" alt="">
-                                </div>
-                                <div class="text-holder">
-                                    <div class="top">
-                                        <div class="name pull-left">
-                                            <h4>Robert Mil – Feb 07, 2017</h4>
+                            @foreach ($blog->comments as $comment)
+                                <div class="single-comment">
+                                    <div class="img-holder">
+                                        <img src="{{ asset('storage/' . $comment->user->avatar) }}" class="img-responsive"
+                                            alt="{{ $comment->user->name }}">
+                                    </div>
+                                    <div class="text-holder">
+                                        <div class="top">
+                                            <div class="name pull-left">
+                                                <h4>{{ $comment->user->name }} –
+                                                    {{ $comment->created_at->format('H:i - d/m/Y') }}</h4>
+                                            </div>
                                         </div>
-                                        <div class="rating pull-right">
-                                            <ul>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
+                                        <div class="text">
+                                            <p>{!! $comment->content !!}</p>
                                         </div>
                                     </div>
-                                    <div class="text">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                                            veniam, quis nostrud exercitation</p>
-                                    </div>
                                 </div>
-                            </div>
-                            <div class="single-comment">
-                                <div class="img-holder">
-                                    <img src="assets/img/blog/1.jpg" class="img-responsive" alt="">
-                                </div>
-                                <div class="text-holder">
-                                    <div class="top">
-                                        <div class="name pull-left">
-                                            <h4>Daniel Dax – Feb 10, 2017</h4>
-                                        </div>
-                                        <div class="rating pull-right">
-                                            <ul>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star active"></i></li>
-                                                <li><i class="fa fa-star"></i></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="text">
-                                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-                                            veniam, quis nostrud exercitation.</p>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                     <div class="row no-mrg">
                         <div class="comments-form">
                             <div class="section-title2">
-                                <h3>Comments (2)</h3>
+                                <h3>Để lại một bình luận</h3>
                             </div>
-                            <form>
-                                <div class="col-md-6 col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Your Name">
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <input type="email" class="form-control" placeholder="Your Email">
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Your Mobile">
-                                </div>
-                                <div class="col-md-6 col-sm-6">
-                                    <input type="text" class="form-control" placeholder="Subject">
-                                </div>
-                                <div class="col-md-12 col-sm-12">
-                                    <textarea class="form-control" placeholder="Comment"></textarea>
-                                </div>
-                                <button class="thm-btn btn-comment" type="submit">submit now</button>
-                            </form>
+                            @auth
+                                <form action="{{ route('blog.comment', ['blogId' => $blog->id]) }}" method="POST">
+                                    @csrf
+                                    <div class="col-md-12 col-sm-12">
+                                        <textarea class="form-control" placeholder="Nhập bình luận của bạn" name="content"></textarea>
+                                    </div>
+                                    @error('content')
+                                        <div class="alert alert-danger">{{ $message }}</div>
+                                    @enderror
+                                    <button class="thm-btn btn-comment" type="submit">Gửi bình luận</button>
+                                </form>
+                            @else
+                                <h3>Vui lòng <a style="color: #28a745;" href="{{ route('login') }}">đăng nhập</a> để để lại
+                                    bình
+                                    luận</h3>
+                            @endauth
                         </div>
                     </div>
                 </div>
@@ -188,26 +153,27 @@
                                 </div>
                             @endforeach
                         </div>
-
-                        <div class="sidebar-widget">
-                            <h4>Bài viết liên quan</h4>
-                            @foreach ($similarBlogs as $blogItem)
-                                <div class="blog-item">
-                                    <div class="post-thumb"><a
-                                            href="{{ route('blog.show', ['id' => $blogItem->id, 'alias' => $blogItem->alias]) }}"><img
-                                                src="{{ asset('storage/' . $blogItem->image) }}" class="img-responsive"
-                                                alt="{{ $blogItem->title }}"></a>
+                        @if ($similarBlogs->count() > 0)
+                            <div class="sidebar-widget">
+                                <h4>Bài viết liên quan</h4>
+                                @foreach ($similarBlogs as $blogItem)
+                                    <div class="blog-item">
+                                        <div class="post-thumb"><a
+                                                href="{{ route('blog.show', ['id' => $blogItem->id, 'alias' => $blogItem->alias]) }}"><img
+                                                    src="{{ asset('storage/' . $blogItem->image) }}" class="img-responsive"
+                                                    alt="{{ $blogItem->title }}"></a>
+                                        </div>
+                                        <div class="blog-detail">
+                                            <a
+                                                href="{{ route('blog.show', ['id' => $blogItem->id, 'alias' => $blogItem->alias]) }}">
+                                                <h4>Enim Ad Minim Veniam, Quis Nostrud Exercitation</h4>
+                                            </a>
+                                            <div class="post-info">Aug 10 2016</div>
+                                        </div>
                                     </div>
-                                    <div class="blog-detail">
-                                        <a
-                                            href="{{ route('blog.show', ['id' => $blogItem->id, 'alias' => $blogItem->alias]) }}">
-                                            <h4>Enim Ad Minim Veniam, Quis Nostrud Exercitation</h4>
-                                        </a>
-                                        <div class="post-info">Aug 10 2016</div>
-                                    </div>
-                                </div>
-                            @endforeach
-                        </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
                 </div>
                 <!-- End Start Sidebar -->

@@ -43,7 +43,8 @@
                     <div class="get-touch">
                         <h4>Liên lạc</h4>
                         <ul>
-                            <li><i class="fa fa-map-marker"></i><span>{{ $company->address . ' | ' . $provinceName }}</span>
+                            <li><i
+                                    class="fa fa-map-marker"></i><span>{{ $company->address . ' | ' . $company->provinceName }}</span>
                             </li>
                             <li><i class="fa fa-envelope"></i><span>{{ $company->email }}</span></li>
                             <li><i class="fa fa-phone"></i><span>{{ $company->phone }}</span></li>

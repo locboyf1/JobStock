@@ -22,9 +22,7 @@ class CompanyController extends Controller
             return view('content.company.notify');
         }
 
-        $provinceName = functions::getProvinceName($company->province_id);
-
-        return view('content.company.show', ['company' => $company, 'provinceName' => $provinceName]);
+        return view('content.company.show', ['company' => $company]);
     }
 
     public function terms()
