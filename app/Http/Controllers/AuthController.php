@@ -11,8 +11,10 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -142,5 +144,42 @@ class AuthController extends Controller
         });
 
         return redirect()->route('login')->with('success', 'Mật khẩu mới đã gửi đến email của bạn');
+    }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+            $GgUser = Socialite::driver('google')->user();
+            $userDB = User::where('email', $GgUser->email)->first();
+            $password = Str::password(10);
+            $role = Role::where('alias', config('account.ROLE_USER'))->first();
+
+            if (! $userDB) {
+                $userDB = User::create([
+                    'name' => $GgUser->name,
+                    'email' => $GgUser->email,
+                    'password' => Hash::make($password),
+                    'role_id' => $role->id,
+                    'is_active' => true,
+                ]);
+
+                Mail::html('Cảm ơn bạn đã tin tưởng sử dụng dịch vụ JobStock<br>Tài khoản của bạn đã được đăng ký thành công<br>Tài khoản đăng nhập là email của bạn và mật khẩu là <b>'.$password.'</b><br>Vui lòng thay đổi mật khẩu ngay khi đăng nhập.<br>Cảm ơn bạn đã sử dụng JobStock', function ($message) use ($userDB) {
+                    $message->to($userDB->email)->subject('JobStock - Đăng ký thành công');
+                });
+            }
+
+            Auth::login($userDB);
+
+            return redirect()->route('home')->with('success', 'Đăng nhập với google thành công');
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+
+            return redirect()->route('login')->with('error', 'Đăng nhập với google thất bại, có lỗi xảy ra');
+        }
     }
 }

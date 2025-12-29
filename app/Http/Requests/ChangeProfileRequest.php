@@ -23,7 +23,7 @@ class ChangeProfileRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:100',
-            'phone' => 'required|max:11',
+            'phone' => 'nullable|string|max:11',
             'avatar' => 'nullable|image',
         ];
     }
@@ -33,8 +33,8 @@ class ChangeProfileRequest extends FormRequest
         return [
             'name.required' => 'Vui lòng nhập họ và tên',
             'name.max' => 'Họ và tên không được quá dài',
-            'phone.required' => 'Vui lòng nhập số điện thoại',
             'phone.max' => 'Số điện thoại không được quá dài',
+            'phone.string' => 'Số điện thoại không hợp lệ',
             'avatar.image' => 'Vui lòng chọn file ảnh',
         ];
     }

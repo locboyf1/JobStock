@@ -62,7 +62,7 @@ class CensorContentJobPost implements ShouldQueue
             $respone = Http::withHeaders(
                 [
                     'Content-Type' => 'application/json',
-                    'Authorization' => 'Bearer '.env('GROQ_API_KEY'),
+                    'Authorization' => 'Bearer '.config('services.apikey.groq'),
                 ])->timeout(60)->withOptions(['verify' => false])->post('https://api.groq.com/openai/v1/chat/completions',
                     [
                         'model' => 'llama-3.3-70b-versatile',

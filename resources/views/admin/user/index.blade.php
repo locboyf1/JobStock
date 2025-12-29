@@ -32,7 +32,7 @@
                                     </td>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->phone }}</td>
+                                    <td>{{ $user->phone ? $user->phone : 'Chưa cập nhật' }}</td>
                                     <td>{{ $user->role->name }}</td>
                                     <td>
                                         <div class="row">

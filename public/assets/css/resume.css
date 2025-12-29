@@ -1,0 +1,172 @@
+/* Resume Builder Container */
+.resume-builder-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    padding: 30px 0;
+    align-items: flex-start;
+}
+
+/* Sidebar (Left Control Panel) */
+.resume-sidebar {
+    flex: 0 0 280px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 25px;
+    position: sticky;
+    top: 20px;
+}
+
+.resume-sidebar h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: #333;
+    border-bottom: 2px solid #f0f2f5;
+    padding-bottom: 10px;
+}
+
+/* Toggle Switches */
+.section-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 6px;
+    transition: background 0.3s;
+}
+
+.section-toggle:hover {
+    background: #f9f9f9;
+}
+
+.section-toggle label {
+    font-size: 15px;
+    color: #555;
+    font-weight: 500;
+    cursor: pointer;
+    margin: 0;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 22px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:checked+.slider {
+    background-color: #00b894;
+    /* Green accent */
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #00b894;
+}
+
+input:checked+.slider:before {
+    transform: translateX(18px);
+}
+
+/* Main Content Area */
+.resume-editor {
+    flex: 1;
+    background: transparent;
+}
+
+.resume-section {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    padding: 30px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    border: 1px solid #eee;
+}
+
+.resume-section.hidden {
+    display: none;
+}
+
+.resume-section h2 {
+    font-size: 22px;
+    color: #2d3436;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.resume-section h2 i {
+    color: #00b894;
+}
+
+/* Form Elements */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    padding: 12px 15px;
+    font-size: 14px;
+    width: 100%;
+    transition: border-color 0.3s;
+}
+
+.form-control:focus {
+    border-color: #00b894;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
+}
+
+.btn-add-more {
+    background: #f1f2f6;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-add-more:hover {
+    background: #dfe4ea;
+}

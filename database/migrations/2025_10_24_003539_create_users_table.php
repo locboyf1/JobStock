@@ -17,10 +17,11 @@ return new class extends Migration
             $table->string('email', 50)->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone', 11);
+            $table->string('phone', 11)->nullable();
             $table->foreignId('role_id')->constrained('roles');
             $table->string('avatar')->nullable();
             $table->boolean('is_active');
+            $table->string('google_id')->nullable()->unique();
             $table->rememberToken();
             $table->timestamps();
         });

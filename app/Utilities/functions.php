@@ -31,7 +31,7 @@ class functions
         $response = Http::withHeaders(
             ['accept' => 'application/json',
                 'content-type' => 'application/json',
-                'Authorization' => 'bearer '.env('COHERE_API_KEY')]
+                'Authorization' => 'bearer '.config('services.apikey.cohere')]
         )->timeout(60)->withOptions(['verify' => false])->post('https://api.cohere.com/v2/embed',
             [
                 'model' => 'embed-v4.0',

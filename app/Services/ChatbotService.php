@@ -46,7 +46,7 @@ class ChatbotService
 
         try {
             $messages = array_merge([['role' => 'system', 'content' => $this->rules."\n".$jobContent]], $history);
-            $response = Http::withToken(env('GEMINI_API_KEY'))
+            $response = Http::withToken(config('services.apikey.gemini'))
                 ->timeout(30)
                 ->withOptions(['verify' => false])
                 ->post('https://generativelanguage.googleapis.com/v1beta/openai/chat/completions', [

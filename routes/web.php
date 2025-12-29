@@ -12,6 +12,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\JobPostSavedController;
 use App\Http\Controllers\PostReportController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ResumeController;
 use App\Http\Middleware\AuthMiddleware;
 use App\Http\Middleware\AuthPageMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +29,13 @@ Route::middleware(AuthPageMiddleware::class)->group(function () {
     Route::post('/forget-password', [AuthController::class, 'postForgetPassword'])->name('postForgetPassword');
     Route::get('/reset-password', [AuthController::class, 'resetPassword'])->name('resetPassword');
     Route::post('/reset-password', [AuthController::class, 'postResetPassword'])->name('postResetPassword');
+
+    Route::get('auth/google', [AuthController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 });
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::middleware('auth')->prefix('company')->name('company.')->group(function () {
+Route::middleware(AuthMiddleware::class)->prefix('company')->name('company.')->group(function () {
     Route::get('/', [CompanyController::class, 'index'])->name('index');
     Route::get('/terms', [CompanyController::class, 'terms'])->name('terms');
     Route::post('/store', [CompanyController::class, 'store'])->name('store');
@@ -87,4 +91,8 @@ Route::prefix('profile')->middleware(AuthMiddleware::class)->name('profile.')->g
 Route::prefix('contact')->name('contact.')->group(function () {
     Route::get('/', [ContactController::class, 'index'])->name('index');
     Route::post('/store', [ContactController::class, 'store'])->name('store');
+});
+
+Route::prefix('resume')->name('resume.')->group(function () {
+    Route::get('/create', [ResumeController::class, 'create'])->name('create');
 });
